@@ -7,7 +7,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _index = 0;
+  int _page = 0;
 
   List<BottomNavigationBarItem> _items = [
     BottomNavigationBarItem(
@@ -29,9 +29,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         title: Center(child: Text('الإعدادات'))),
   ];
 
-  changeTab(int index) {
+  changeTab(int page) {
     setState(() {
-      _index = index;
+      _page = page;
     });
   }
 
@@ -48,7 +48,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
         ),
         child: BottomNavigationBar(
-          currentIndex: _index,
+          type: BottomNavigationBarType.shifting,
+          currentIndex: _page,
           onTap: changeTab,
           items: _items,
         ));

@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-import 'posts.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../constants.dart';
+import 'posts.dart';
 
 class NewsPage extends StatefulWidget {
   final pageName;
@@ -16,7 +19,7 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage> {
   Future getPosts() async {
     String url =
-        'http://www.json-generator.com/api/json/get/csCMeDTSDC?indent=2';
+        'http://www.json-generator.com/api/json/get/cjvUhiIDJu?indent=2';
     http.Response response = await http.get(url);
     var jsonData = json.decode(response.body);
     List<PostItem> posts = [];
@@ -40,33 +43,45 @@ class _NewsPageState extends State<NewsPage> {
     return FutureBuilder(
         future: getPosts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-
-            if (snapshot.data != null) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text(widget.pageName),
-                  centerTitle: true,
-                ),
-                body:ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return PostItem(name: snapshot.data[index].name,);
-                  },
-                ) ,
-              );
-            } else {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    CircularProgressIndicator(),
-                    SizedBox(height: 20),
-                    Text('Loading')
-                  ],
-                ),
-              );
-            }
-
+          if (snapshot.data != null) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(widget.pageName),
+                centerTitle: true,
+              ),
+              body: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return PostItem(
+                    name: snapshot.data[index].name,
+                    pic: snapshot.data[index].pic,
+                    index: snapshot.data[index].index,
+                    dp: snapshot.data[index].dp,
+                    about: snapshot.data[index].about,
+                    email: snapshot.data[index].email,
+                  );
+                },
+              ),
+            );
+          } else {
+            return Container(
+              alignment: Alignment.topCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
+                    backgroundColor: Constants.lightPrimary,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Loading',
+                    style: Theme.of(context).textTheme.body1,
+                  )
+                ],
+              ),
+            );
+          }
         });
   }
 }

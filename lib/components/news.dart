@@ -67,11 +67,13 @@ class _ButtonContent extends StatelessWidget {
           )
         ],
       ),
-      onPressed: () => Navigator.push(context, MaterialPageRoute(
-          builder: (context) => NewsPage(
-            pageName: text,
-            pageIcon: icon,
-          ))),
+      onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NewsPage(
+                    pageName: text,
+                    pageIcon: icon,
+                  ))),
     ));
   }
 }

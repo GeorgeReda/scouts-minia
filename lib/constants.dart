@@ -58,7 +58,9 @@ class Constants {
     fontFamily: 'El Messiri',
     appBarTheme: AppBarTheme(
       color: lighterBlack,
-    ),
+        iconTheme: IconThemeData(
+          color: darkText,
+        )),
     scaffoldBackgroundColor: darkBG,
     textTheme: TextTheme(
         body1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),

@@ -11,11 +11,11 @@ class PostItem extends StatefulWidget {
   const PostItem(
       {Key key,
       this.index,
-      this.name,
       this.about,
       this.email,
       this.pic,
-      this.dp})
+      this.dp,
+      this.name})
       : super(key: key);
 
   @override
@@ -25,25 +25,41 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 5),
-          child: InkWell(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage('${widget.dp}'),
-                  ),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    widget.name,
-                  ),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5),
+      child: InkWell(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage('${widget.dp}'),
+              ),
+              title: Text(
+                "${widget.name}",
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
+              ),
             ),
-          )),
+            Image.network(
+              "${widget.pic}",
+              height: 170,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              fit: BoxFit.cover,
+            ),
+          ],
+        ),
+        onTap: () {},
+      ),
     );
+    ;
   }
 }
