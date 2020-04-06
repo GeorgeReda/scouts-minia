@@ -19,7 +19,7 @@ class Constants {
   static ThemeData lightTheme = ThemeData(
     primaryColor: lightPrimary,
     accentColor: lightBG,
-    primaryIconTheme: IconThemeData(color: lightPrimary, size: 10),
+    primaryIconTheme: IconThemeData(color: lightBG, size: 10),
     backgroundColor: lightBG,
     buttonColor: lightPrimary,
     cursorColor: lightCursor,
@@ -42,7 +42,7 @@ class Constants {
   static ThemeData darkTheme = ThemeData(
     primaryColor: darkPrimary,
     accentColor: darkBG,
-    primaryIconTheme: IconThemeData(color: darkPrimary, size: 10),
+    primaryIconTheme: IconThemeData(color: darkText, size: 10),
     backgroundColor: darkBG,
     buttonColor: darkPrimary,
     cursorColor: darkCursor,
@@ -56,11 +56,7 @@ class Constants {
     textSelectionColor: darkTextSelection,
     textSelectionHandleColor: darkCursor,
     fontFamily: 'El Messiri',
-    appBarTheme: AppBarTheme(
-      color: lighterBlack,
-        iconTheme: IconThemeData(
-          color: darkText,
-        )),
+    appBarTheme: AppBarTheme(color: lighterBlack),
     scaffoldBackgroundColor: darkBG,
     textTheme: TextTheme(
         body1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scouts_minia/components/news_page.dart';
+import 'package:scouts_minia/routes/news_page.dart';
 
 class NewsSections extends StatelessWidget {
   final List<String> _text = ['إيبارشيتنا', 'العالم', 'مجموعتي'];
