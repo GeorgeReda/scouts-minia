@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'detailsPage.dart';
+
 class PostItem extends StatefulWidget {
   final int index;
   final String name;
@@ -8,16 +10,17 @@ class PostItem extends StatefulWidget {
   final String dp;
   final String pic;
   final String date;
+  final String details;
 
-  const PostItem(
-      {Key key,
-      this.index,
-      this.about,
-      this.email,
-      this.pic,
-      this.dp,
-      this.name,
-      this.date})
+  const PostItem({Key key,
+    @required this.index,
+    @required this.about,
+    @required this.email,
+    @required this.pic,
+    @required this.dp,
+    @required this.name,
+    @required this.date,
+    @required this.details})
       : super(key: key);
 
   @override
@@ -60,21 +63,32 @@ class _PostItemState extends State<PostItem> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Image.network(
-              "${widget.pic}",
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height / 2,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              fit: BoxFit.cover,
+            Hero(
+              tag: 'mainImage${widget.index}',
+              child: Image.network(
+                "${widget.pic}",
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 2,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                fit: BoxFit.cover,
+              ),
             ),
           ],
         ),
-        onTap: () {}, //Todo: Add Navigation to Details Page
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Details(
+                pic: widget.pic,
+                name: widget.name,
+                index: widget.index,
+                details: widget.details,
+              )));
+        }, //Todo: Add Navigation to Details Page
       ),
     );
   }

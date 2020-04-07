@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:scouts_minia/tools/network_manager.dart';
 
 import '../components/posts.dart';
 import '../constants.dart';
@@ -9,35 +7,21 @@ import '../constants.dart';
 class NewsPage extends StatefulWidget {
   final pageName;
   final pageIcon;
+  final url;
 
-  const NewsPage({Key key, this.pageName, this.pageIcon}) : super(key: key);
+  const NewsPage(
+      {Key key,
+      @required this.pageName,
+      @required this.pageIcon,
+      @required this.url})
+      : super(key: key);
 
   @override
   _NewsPageState createState() => _NewsPageState();
 }
 
 class _NewsPageState extends State<NewsPage> {
-  Future getPosts() async {
-    String url =
-        'http://www.json-generator.com/api/json/get/bVqnTFdhqq?indent=2';
-    http.Response response = await http.get(url);
-    var jsonData = json.decode(response.body);
-    List<PostItem> posts = [];
-    for (var i in jsonData) {
-      PostItem post = PostItem(
-        name: i['name'],
-        about: i['about'],
-        dp: i['dp'],
-        email: i['email'],
-        index: i['index'],
-        pic: i['picture'],
-        date: i['date'],
-      );
-      posts.add(post);
-    }
-    return posts;
-  }
-
+  List<PostItem> posts = [];
   @override
   void initState() {
     super.initState();
@@ -46,7 +30,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getPosts(),
+        future: NetworkManager(widget.url).getPosts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data != null) {
             return Scaffold(
@@ -56,9 +40,16 @@ class _NewsPageState extends State<NewsPage> {
                 centerTitle: true,
               ),
               body: RefreshIndicator(
-//                onRefresh: ,
+                color: Theme.of(context).primaryColor,
+                onRefresh:(){
+                  return NetworkManager(widget.url).getPosts();
+                },
                 child: ListView.separated(
-                  separatorBuilder: (context, index) => Divider(),
+                  separatorBuilder: (context, index) => Divider(
+                    endIndent: 50,
+                    indent:  50,
+                    thickness: 2,
+                  ),
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -70,6 +61,7 @@ class _NewsPageState extends State<NewsPage> {
                       about: snapshot.data[index].about,
                       email: snapshot.data[index].email,
                       date: snapshot.data[index].date,
+                      details: snapshot.data[index].details,
                     );
                   },
                 ),
@@ -89,7 +81,7 @@ class _NewsPageState extends State<NewsPage> {
                   Text(
                     'Loading',
                     style: Theme.of(context).textTheme.body1,
-                  )
+                  ),
                 ],
               ),
             );

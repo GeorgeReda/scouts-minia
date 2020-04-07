@@ -59,10 +59,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//        body: PageView(
-//          controller: _pageController,
-//          physics: NeverScrollableScrollPhysics(),
-//          children: _pages),
       body: PageView.builder(
         onPageChanged: onChangedPage,
         itemCount: _pages.length,
