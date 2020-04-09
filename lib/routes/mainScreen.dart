@@ -12,7 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  PageController _pageController = PageController();
+  PageController _pageController;
   int _pageIndex = 0;
   final List<Widget> _pages = [
     NewsSections(),
@@ -52,8 +52,18 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _pageIndex = pageIndex;
     });
-    _pageController.animateToPage(_pageIndex,
-        duration: Duration(milliseconds: 400), curve: Curves.easeInOut);
+    _pageController.jumpToPage(_pageIndex);
+  }
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 
   @override

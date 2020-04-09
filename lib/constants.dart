@@ -31,7 +31,7 @@ class Constants {
     ),
     splashColor: lightCursor,
     textSelectionColor: lightTextSelection,
-    textSelectionHandleColor: lightCursor,
+    textSelectionHandleColor: lightPrimary,
     fontFamily: 'El Messiri',
     appBarTheme: AppBarTheme(
       color: lightPrimary,
@@ -54,7 +54,7 @@ class Constants {
     ),
     splashColor: darkCursor,
     textSelectionColor: darkTextSelection,
-    textSelectionHandleColor: darkCursor,
+    textSelectionHandleColor: lightPrimary,
     fontFamily: 'El Messiri',
     appBarTheme: AppBarTheme(color: lighterBlack),
     scaffoldBackgroundColor: darkBG,
