@@ -10,9 +10,7 @@ class NewsSections extends StatelessWidget {
     FontAwesomeIcons.globe,
     FontAwesomeIcons.users
   ];
-  final urls = [
-    'http://www.json-generator.com/api/json/get/ccBScAWvuG?indent=2'
-  ]; //TODO: Change with News Pages' Urls
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +22,16 @@ class NewsSections extends StatelessWidget {
           _ButtonContent(
             text: _text[0],
             icon: _icons[0],
-            url: urls[0],
           ),
           SizedBox(height: 15),
           _ButtonContent(
             text: _text[1],
             icon: _icons[1],
-            url: urls[0],
           ),
           SizedBox(height: 15),
           _ButtonContent(
             text: _text[2],
             icon: _icons[2],
-            url: urls[0],
           ),
         ],
       ),
@@ -47,10 +42,9 @@ class NewsSections extends StatelessWidget {
 class _ButtonContent extends StatelessWidget {
   final IconData icon;
   final String text;
-  final String url;
 
   const _ButtonContent(
-      {Key key, @required this.icon, @required this.text, @required this.url})
+      {Key key, @required this.icon, @required this.text})
       : super(key: key);
 
   @override
@@ -82,7 +76,6 @@ class _ButtonContent extends StatelessWidget {
               builder: (context) => NewsPage(
                     pageName: text,
                     pageIcon: icon,
-                    url: url,
                   ))),
     ));
   }

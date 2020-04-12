@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scouts_minia/routes/mainScreen.dart';
-import 'package:scouts_minia/routes/settings.dart';
+import 'package:scouts_minia/tools/network_manager.dart';
 
 import '../constants.dart';
 
 class FormButton extends StatelessWidget {
+
+  final String email;
+  final String password;
+
   const FormButton({
     Key key,
-    @required GlobalKey<FormState> form,
-  })  : _form = form,
+    @required GlobalKey<
+        FormState> form, @required this.email, @required this.password
+  })
+      : _form = form,
         super(key: key);
 
   final GlobalKey<FormState> _form;
@@ -18,10 +23,16 @@ class FormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-          vertical: 40, horizontal: MediaQuery.of(context).size.width / 6),
+          vertical: 40, horizontal: MediaQuery
+          .of(context)
+          .size
+          .width / 6),
       child: RaisedButton(
           padding: EdgeInsets.symmetric(
-            vertical: MediaQuery.of(context).size.height / 50,
+            vertical: MediaQuery
+                .of(context)
+                .size
+                .height / 50,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
@@ -31,8 +42,7 @@ class FormButton extends StatelessWidget {
           child: Text('Submit'),
           onPressed: () {
             if (_form.currentState.validate()) {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => MainScreen()));
+              NetworkManager().loginData(email, password,context);
             }
           }),
     );
@@ -45,6 +55,7 @@ class ReusableFormField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final bool secure;
+  final TextEditingController controller;
 
   const ReusableFormField({
     Key key,
@@ -52,6 +63,7 @@ class ReusableFormField extends StatelessWidget {
     @required this.labelText,
     @required this.hintText,
     @required this.icon,
+    @required this.controller,
     this.secure,
   }) : super(key: key);
 

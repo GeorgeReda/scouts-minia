@@ -12,6 +12,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _form = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class _LoginState extends State<Login> {
             children: <Widget>[
               Logo(),
               ReusableFormField(
+                controller: _emailController,
                 secure: false,
                 keyboardType: TextInputType.emailAddress,
                 labelText: 'EMAIL',
@@ -32,6 +35,7 @@ class _LoginState extends State<Login> {
                 icon: FontAwesomeIcons.solidEnvelope,
               ),
               ReusableFormField(
+                controller: _passwordController,
                 secure: true,
                 labelText: 'PASSWORD',
                 hintText: 'Something your friends doesn\'t know',
@@ -52,7 +56,11 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              FormButton(form: _form)
+              FormButton(
+                form: _form,
+                email: _emailController.text,
+                password: _passwordController.text,
+              )
             ],
           ),
         ),

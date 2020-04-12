@@ -7,13 +7,12 @@ import '../constants.dart';
 class NewsPage extends StatefulWidget {
   final pageName;
   final pageIcon;
-  final url;
 
   const NewsPage(
       {Key key,
       @required this.pageName,
       @required this.pageIcon,
-      @required this.url})
+      })
       : super(key: key);
 
   @override
@@ -30,7 +29,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: NetworkManager(widget.url).getPosts(),
+        future: NetworkManager().getPosts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data != null) {
             return Scaffold(
@@ -42,7 +41,7 @@ class _NewsPageState extends State<NewsPage> {
               body: RefreshIndicator(
                 color: Theme.of(context).primaryColor,
                 onRefresh:(){
-                  return NetworkManager(widget.url).getPosts();
+                  return NetworkManager().getPosts();
                 },
                 child: ListView.separated(
                   separatorBuilder: (context, index) => Divider(
