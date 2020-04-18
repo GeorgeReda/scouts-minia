@@ -11,7 +11,6 @@ class NewsSections extends StatelessWidget {
     FontAwesomeIcons.users
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,8 +42,7 @@ class _ButtonContent extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const _ButtonContent(
-      {Key key, @required this.icon, @required this.text})
+  const _ButtonContent({Key key, @required this.icon, @required this.text})
       : super(key: key);
 
   @override

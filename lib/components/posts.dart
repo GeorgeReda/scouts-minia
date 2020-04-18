@@ -88,7 +88,7 @@ class _PostItemState extends State<PostItem> {
                 index: widget.index,
                 details: widget.details,
               )));
-        }, //Todo: Add Navigation to Details Page
+        },
       ),
     );
   }

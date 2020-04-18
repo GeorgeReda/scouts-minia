@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
 
 import '../constants.dart';
 
 class FormButton extends StatelessWidget {
+  final onPressed;
 
-  final String email;
-  final String password;
+  const FormButton({Key key, this.onPressed}) : super(key: key);
 
-  const FormButton({
-    Key key,
-    @required GlobalKey<
-        FormState> form, @required this.email, @required this.password
-  })
-      : _form = form,
-        super(key: key);
-
-  final GlobalKey<FormState> _form;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: 40, horizontal: MediaQuery
-          .of(context)
-          .size
-          .width / 6),
-      child: RaisedButton(
+        margin: EdgeInsets.symmetric(
+            vertical: 40, horizontal: MediaQuery.of(context).size.width / 6),
+        child: RaisedButton(
           padding: EdgeInsets.symmetric(
-            vertical: MediaQuery
-                .of(context)
-                .size
-                .height / 50,
+            vertical: MediaQuery.of(context).size.height / 50,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
@@ -40,22 +24,21 @@ class FormButton extends StatelessWidget {
           textColor: Colors.white,
           color: Constants.lightPrimary,
           child: Text('Submit'),
-          onPressed: () {
-            if (_form.currentState.validate()) {
-              NetworkManager().loginData(email, password,context);
-            }
-          }),
-    );
+          onPressed: onPressed,
+        ));
   }
 }
 
 class ReusableFormField extends StatelessWidget {
+  final String id;
   final TextInputType keyboardType;
   final String labelText;
   final String hintText;
   final IconData icon;
   final bool secure;
   final TextEditingController controller;
+
+  final Widget suffix;
 
   const ReusableFormField({
     Key key,
@@ -64,7 +47,8 @@ class ReusableFormField extends StatelessWidget {
     @required this.hintText,
     @required this.icon,
     @required this.controller,
-    this.secure,
+    @required this.secure,
+    @required this.id, this.suffix,
   }) : super(key: key);
 
   @override
@@ -72,11 +56,13 @@ class ReusableFormField extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       child: TextFormField(
+        controller: controller,
         obscureText: secure,
         keyboardType: keyboardType,
         toolbarOptions: ToolbarOptions(
             selectAll: false, copy: false, cut: false, paste: false),
         decoration: InputDecoration(
+          suffix: suffix,
           labelText: labelText,
           labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           hintText: hintText,
@@ -84,8 +70,14 @@ class ReusableFormField extends StatelessWidget {
         ),
         textDirection: TextDirection.ltr,
         validator: (val) {
-          if (val.isEmpty) {
-            return 'Please enter valid $labelText';
+          if (val.isEmpty && id != 'phone') {
+            return 'Please enter valid $id';
+          } else if (id.toLowerCase().trim() == 'phone') {
+            if(controller.text.length != 11){
+              return 'Please enter a valid number!';
+            }
+          } else if (id.toLowerCase().trim() == 'password' && id.length != 8) {
+            return 'Password must be more than 8 numbers';
           }
           return null;
         },
