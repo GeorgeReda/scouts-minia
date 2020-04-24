@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scouts_minia/routes/login.dart';
-import 'package:scouts_minia/routes/mainScreen.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
@@ -25,9 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
   read() async {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('api token') ?? 0;
-    if (value != '0') {
+    if (value != 'out' || value == 0) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+          context, MaterialPageRoute(builder: (context) => Login()));
     } else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Login()));

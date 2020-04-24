@@ -40,7 +40,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
           bottom: MediaQuery
               .of(context)
               .size
-              .height / 15),
+              .height / 20),
       child: Center(
         child: FadeTransition(
           opacity: _animation,

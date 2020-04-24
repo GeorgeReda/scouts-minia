@@ -32,16 +32,32 @@ class NetworkManager {
       }
     } catch (e) {
       print(e);
+      throw e;
     }
   }
 
-  registerData(
-      String name, String email, String password, String phone, context) async {
+  registerData(String name, String email, String password, String phone, image,
+      context) async {
     try {
+      if (null == image) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('An error has occurred ! Please try again .'),
+          ),
+          duration: Duration(seconds: 2),
+        ));
+      }
+      String fileName = image.path.split('/').last;
       String myUrl = '$serverUrl/user/register';
-      final response = await http.post(myUrl,
-          headers: {'Accept': 'application/json'},
-          body: {"name": "$name", "email": "$email", "password": "$password"});
+      final response = await http.post(myUrl, headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "name": "$name",
+        "email": "$email",
+        "password": "$password",
+        "image": image
+      });
       status = response.body.contains('error');
       var data = jsonDecode(response.body.trim());
       if (status) {
@@ -58,7 +74,7 @@ class NetworkManager {
   }
 
   logOut() {
-    save('0');
+    save('out');
   }
 
   save(String token) async {
@@ -102,6 +118,30 @@ class NetworkManager {
       return posts;
     } catch (e) {
       print(e);
+      throw AlertDialog(
+        title: Text('Couldn\' get posts . Please Check your connetction '),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(Icons.error_outline),
+          )
+        ],
+      );
     }
+  }
+
+  Future getBooks() async {
+    try {
+      var tokenVal = read();
+      http.Response response = await http.get(
+        'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenVal'
+        },
+      );
+      var jsonData = json.decode(response.body);
+      List<PostItem> books = [];
+    } catch (e) {}
   }
 }

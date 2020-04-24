@@ -10,7 +10,12 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Settings'),
+        child: ListView.custom(
+          childrenDelegate: SliverChildListDelegate([
+
+          ]),
+          physics: BouncingScrollPhysics(),
+        ),
       ),
     );
   }

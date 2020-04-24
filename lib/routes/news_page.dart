@@ -8,12 +8,11 @@ class NewsPage extends StatefulWidget {
   final pageName;
   final pageIcon;
 
-  const NewsPage(
-      {Key key,
-      @required this.pageName,
-      @required this.pageIcon,
-      })
-      : super(key: key);
+  const NewsPage({
+    Key key,
+    @required this.pageName,
+    @required this.pageIcon,
+  }) : super(key: key);
 
   @override
   _NewsPageState createState() => _NewsPageState();
@@ -21,6 +20,7 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   List<PostItem> posts = [];
+
   @override
   void initState() {
     super.initState();
@@ -34,21 +34,26 @@ class _NewsPageState extends State<NewsPage> {
           if (snapshot.data != null) {
             return Scaffold(
               appBar: AppBar(
-                iconTheme: Theme.of(context).primaryIconTheme,
+                iconTheme: Theme
+                    .of(context)
+                    .primaryIconTheme,
                 title: Text(widget.pageName),
                 centerTitle: true,
               ),
               body: RefreshIndicator(
-                color: Theme.of(context).primaryColor,
-                onRefresh:(){
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+                onRefresh: () {
                   return NetworkManager().getPosts();
                 },
                 child: ListView.separated(
-                  separatorBuilder: (context, index) => Divider(
-                    endIndent: 50,
-                    indent:  50,
-                    thickness: 2,
-                  ),
+                  separatorBuilder: (context, index) =>
+                      Divider(
+                        endIndent: 50,
+                        indent: 50,
+                        thickness: 2,
+                      ),
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -79,7 +84,10 @@ class _NewsPageState extends State<NewsPage> {
                   SizedBox(height: 20),
                   Text(
                     'Loading',
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body1,
                   ),
                 ],
               ),
