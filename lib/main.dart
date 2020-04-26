@@ -3,12 +3,13 @@ import 'package:scouts_minia/routes/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
+import 'routes/mainScreen.dart';
 
 main() async {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'Scouty',
-    home: SplashScreen(),
+    home: MainScreen(),
     theme: Constants.lightTheme,
     darkTheme: Constants.darkTheme,
   ));

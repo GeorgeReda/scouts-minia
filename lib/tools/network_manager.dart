@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:scouts_minia/components/posts.dart';
 import 'package:scouts_minia/routes/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+ //Todo: Add Shared Prefs
 class NetworkManager {
   String serverUrl = 'http://scoutsapp1.000webhostapp.com/public/api';
   var status;
@@ -17,13 +17,15 @@ class NetworkManager {
       final response = await http.post(myUrl,
           headers: {'Accept': 'application/json'},
           body: {"email": "$email", "password": "$password"});
+      print(response.statusCode);
+      print(response.request.toString());
       status = response.body.contains('error');
       var data = jsonDecode(response.body.trim());
       if (status) {
         print('data : ${data["error"]}');
       } else {
         print('data : ${data["api token"]}');
-        save(data["api token"]);
+        save('api token',data["api token"]);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -64,7 +66,7 @@ class NetworkManager {
         print('data : ${data["error"]}');
       } else {
         print('data : ${data["api token"]}');
-        save(data["api token"]);
+        save('api token',data["api token"]);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => MainScreen()));
       }
@@ -74,27 +76,15 @@ class NetworkManager {
   }
 
   logOut() {
-    save('out');
-  }
-
-  save(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'api token';
-    final value = token;
-    prefs.setString(key, value);
-  }
-
-  read() async {
-    final prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString('api token') ?? 0;
-    return value;
+    save('api token','out');
   }
 
   Future getPosts() async {
     try {
-      var tokenVal = read();
+      var tokenVal = read('api token');
       http.Response response = await http.get(
         'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
+//      '$serverUrl/showpost',
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenVal'
@@ -132,7 +122,7 @@ class NetworkManager {
 
   Future getBooks() async {
     try {
-      var tokenVal = read();
+      var tokenVal = read('api token');
       http.Response response = await http.get(
         'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
         headers: {
