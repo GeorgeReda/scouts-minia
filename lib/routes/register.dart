@@ -6,7 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:scouts_minia/routes/mainScreen.dart';
-import 'package:http/http.dart' as http;
+
 import '../components/form.dart';
 import '../constants.dart';
 import '../tools/network_manager.dart';
@@ -36,7 +36,6 @@ class _RegisterState extends State<Register> {
     });
     base64Image = base64Encode(_image.readAsBytesSync());
   }
-
 
   togglePassword() {
     setState(() {

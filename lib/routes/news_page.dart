@@ -29,7 +29,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: NetworkManager().getPosts(),
+        future: NetworkManager().getPosts(context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data != null) {
             return Scaffold(
@@ -45,7 +45,7 @@ class _NewsPageState extends State<NewsPage> {
                     .of(context)
                     .primaryColor,
                 onRefresh: () {
-                  return NetworkManager().getPosts();
+                  return NetworkManager().getPosts(context);
                 },
                 child: ListView.separated(
                   separatorBuilder: (context, index) =>

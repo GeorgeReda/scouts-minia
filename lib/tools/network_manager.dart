@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:scouts_minia/components/posts.dart';
 import 'package:scouts_minia/routes/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
- //Todo: Add Shared Prefs
+
+//Todo: Add Shared Prefs
 class NetworkManager {
   String serverUrl = 'http://scoutsapp1.000webhostapp.com/public/api';
   var status;
@@ -13,6 +14,7 @@ class NetworkManager {
 
   loginData(String email, String password, BuildContext context) async {
     try {
+      final prefs = await SharedPreferences.getInstance();
       String myUrl = '$serverUrl/user/login';
       final response = await http.post(myUrl,
           headers: {'Accept': 'application/json'},
@@ -25,7 +27,10 @@ class NetworkManager {
         print('data : ${data["error"]}');
       } else {
         print('data : ${data["api token"]}');
-        save('api token',data["api token"]);
+        prefs.setString('api token', data["api token"]);
+        prefs.setString('name', data["name"]);
+        prefs.setString('email', data["email"]);
+        prefs.setString('image', data["image"]);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -34,7 +39,24 @@ class NetworkManager {
       }
     } catch (e) {
       print(e);
-      throw e;
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('An error has occurred . Please try again !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -45,11 +67,13 @@ class NetworkManager {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('An error has occurred ! Please try again .'),
+            child: Text(
+                'An error has occurred ! Please add a photo nad try again .'),
           ),
           duration: Duration(seconds: 2),
         ));
       }
+      final prefs = await SharedPreferences.getInstance();
       String fileName = image.path.split('/').last;
       String myUrl = '$serverUrl/user/register';
       final response = await http.post(myUrl, headers: {
@@ -66,22 +90,48 @@ class NetworkManager {
         print('data : ${data["error"]}');
       } else {
         print('data : ${data["api token"]}');
-        save('api token',data["api token"]);
+        prefs.setString('api token', data["api token"]);
+        prefs.setString('name', data["name"]);
+        prefs.setString('email', data["email"]);
+        prefs.setString('image', data["image"]);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => MainScreen()));
       }
     } catch (e) {
       print(e);
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('An error has occurred . Please try again !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
     }
   }
 
-  logOut() {
-    save('api token','out');
+  logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('api token');
+    prefs.remove('name');
+    prefs.remove('email');
+    prefs.remove('image');
   }
 
-  Future getPosts() async {
+  Future getPosts(context) async {
     try {
-      var tokenVal = read('api token');
+      final prefs = await SharedPreferences.getInstance();
+      var tokenVal = prefs.getString('api token');
       http.Response response = await http.get(
         'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
 //      '$serverUrl/showpost',
@@ -108,21 +158,31 @@ class NetworkManager {
       return posts;
     } catch (e) {
       print(e);
-      throw AlertDialog(
-        title: Text('Couldn\' get posts . Please Check your connetction '),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Icon(Icons.error_outline),
-          )
-        ],
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('Couldn\' get posts . Please check your connection !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
       );
     }
   }
 
   Future getBooks() async {
     try {
-      var tokenVal = read('api token');
+      final prefs = await SharedPreferences.getInstance();
+      var tokenVal = prefs.getString('api token');
       http.Response response = await http.get(
         'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
         headers: {
