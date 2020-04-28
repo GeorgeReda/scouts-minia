@@ -1,7 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:scouts_minia/routes/accountDetails.dart';
+import 'package:scouts_minia/tools/themeChanger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 import 'login.dart';
@@ -12,11 +14,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
-
   @override
   void initState() {
-   super.initState();
+    super.initState();
   }
 
   @override
@@ -30,7 +30,32 @@ class _SettingsState extends State<Settings> {
             accountName: Text('data'),
             accountEmail: Text('data'),
             currentAccountPicture: Image.asset('images/logo.png'),
-            arrowColor:Constants.darkText,
+            arrowColor: Constants.darkText,
+          ),
+          ReusableListTile(
+            title: 'Edit account',
+            icon: FontAwesomeIcons.exchangeAlt,
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AccountDetails()));
+            },
+          ),
+          Card(
+            color: Theme.of(context).backgroundColor,
+            clipBehavior: Clip.hardEdge,
+            margin: EdgeInsets.all(8),
+            child: SwitchListTile(
+                title: Text(
+                  'Change Theme',
+                  style:
+                      Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                ),
+                activeColor: Constants.lightPrimary,
+                value: Provider.of<ThemeChanger>(context).isDarkMode,
+                onChanged: (val) {
+                  Provider.of<ThemeChanger>(context, listen: false)
+                      .updateTheme(val);
+                }),
           ),
           ReusableListTile(
             title: 'Logout',
@@ -67,6 +92,13 @@ class _SettingsState extends State<Settings> {
               );
             },
           ),
+          RaisedButton(onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
+            print(prefs.getString('api token'));
+            print(prefs.getString('name'));
+            print(prefs.getString('email'));
+            print(prefs.getString('image'));
+          })
         ],
       )),
     );
@@ -94,11 +126,11 @@ class ReusableListTile extends StatelessWidget {
       child: ListTile(
         title: Text(
           title,
-          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 22),
+          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
         ),
         trailing: FaIcon(
           icon,
-          color: Theme.of(context).primaryIconTheme.color,
+          color:Constants.darkPrimary,
         ),
         onTap: onTap,
       ),

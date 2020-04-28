@@ -10,33 +10,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NetworkManager {
   String serverUrl = 'http://scoutsapp1.000webhostapp.com/public/api';
   var status;
-  var token;
 
   loginData(String email, String password, BuildContext context) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String myUrl = '$serverUrl/user/login';
-      final response = await http.post(myUrl,
+      http.post(myUrl,
           headers: {'Accept': 'application/json'},
-          body: {"email": "$email", "password": "$password"});
-      print(response.statusCode);
-      print(response.request.toString());
-      status = response.body.contains('error');
-      var data = jsonDecode(response.body.trim());
-      if (status) {
-        print('data : ${data["error"]}');
-      } else {
-        print('data : ${data["api token"]}');
-        prefs.setString('api token', data["api token"]);
-        prefs.setString('name', data["name"]);
-        prefs.setString('email', data["email"]);
-        prefs.setString('image', data["image"]);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainScreen(),
-            ));
-      }
+          body: {"email": "$email", "password": "$password"}).then((response) {
+        print(response.statusCode);
+        print(response.request.toString());
+        status = response.body.contains('error');
+        var data = jsonDecode(response.body.trim());
+        if (status) {
+          print('data : ${data["error"]}');
+        } else {
+          print('data : ${data["api token"]}');
+          prefs.setString('api token', data["api token"]);
+          prefs.setString('name', data["name"]);
+          prefs.setString('email', data["email"]);
+          prefs.setString('image', data["image"]);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainScreen(),
+              ));
+        }
+      });
     } catch (e) {
       print(e);
       showDialog<void>(
@@ -68,35 +68,90 @@ class NetworkManager {
           content: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-                'An error has occurred ! Please add a photo nad try again .'),
+                'An error has occurred ! Please add a photo and try again .'),
           ),
           duration: Duration(seconds: 2),
         ));
       }
       final prefs = await SharedPreferences.getInstance();
-      String fileName = image.path.split('/').last;
       String myUrl = '$serverUrl/user/register';
-      final response = await http.post(myUrl, headers: {
+      http.post(myUrl, headers: {
         'Accept': 'application/json'
       }, body: {
         "name": "$name",
         "email": "$email",
         "password": "$password",
         "image": image
+      }).then((response) {
+        status = response.body.contains('error');
+        var data = jsonDecode(response.body.trim());
+        if (status) {
+          print('data : ${data["error"]}');
+        } else {
+          print('data : ${data["api token"]}');
+          prefs.setString('api token', data["api token"]);
+          prefs.setString('name', name);
+          prefs.setString('email', email);
+          prefs.setString('image', image);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MainScreen()));
+        }
       });
-      status = response.body.contains('error');
-      var data = jsonDecode(response.body.trim());
-      if (status) {
-        print('data : ${data["error"]}');
-      } else {
-        print('data : ${data["api token"]}');
-        prefs.setString('api token', data["api token"]);
-        prefs.setString('name', data["name"]);
-        prefs.setString('email', data["email"]);
-        prefs.setString('image', data["image"]);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+    } catch (e) {
+      print(e);
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('An error has occurred . Please try again !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  editData(String name, String email, image, context) async {
+    try {
+      if (null == image) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                'An error has occurred ! Please add a photo and try again .'),
+          ),
+          duration: Duration(seconds: 2),
+        ));
       }
+      final prefs = await SharedPreferences.getInstance();
+      String myUrl = '$serverUrl';//Todo: Change Url
+      http.post(myUrl, headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "name": "$name",
+        "email": "$email",
+        "image": image
+      }).then((response) {
+        status = response.body.contains('error');
+        var data = jsonDecode(response.body.trim());
+        if (status) {
+          print('data : ${data["error"]}');
+        } else {
+          prefs.setString('name', name);
+          prefs.setString('email', email);
+          prefs.setString('image', image);
+          Navigator.of(context).pop();
+        }
+      });
     } catch (e) {
       print(e);
       showDialog<void>(
@@ -133,8 +188,8 @@ class NetworkManager {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api token');
       http.Response response = await http.get(
-        'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
-//      '$serverUrl/showpost',
+        'http://www.json-generator.com/api/json/get/bTVHlfWTLS?indent=2',
+//        '$serverUrl/showpost',
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenVal'
@@ -178,8 +233,58 @@ class NetworkManager {
       );
     }
   }
+  addPost(String title, String description, image, context) async {
+    try {
+      if (null == image) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                'An error has occurred ! Please add a photo and try again .'),
+          ),
+          duration: Duration(seconds: 2),
+        ));
+      }
+      String myUrl = '$serverUrl/addposts';
+      http.post(myUrl, headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "title": "$title",
+        "description": "$description",
+        "image": image
+      }).then((response) {
+        status = response.body.contains('error');
+        var data = jsonDecode(response.body.trim());
+        if (status) {
+          print('data : ${data["error"]}');
+        } else {
+          Navigator.of(context).pop();
+        }
+      });
+    } catch (e) {
+      print(e);
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+            Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('An error has occurred . Please try again !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
+    }
+  }
 
-  Future getBooks() async {
+   getBooks() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api token');

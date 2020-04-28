@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:scouts_minia/routes/addPost.dart';
 import 'package:scouts_minia/tools/network_manager.dart';
 
 import '../components/posts.dart';
@@ -34,26 +36,21 @@ class _NewsPageState extends State<NewsPage> {
           if (snapshot.data != null) {
             return Scaffold(
               appBar: AppBar(
-                iconTheme: Theme
-                    .of(context)
-                    .primaryIconTheme,
+                iconTheme: Theme.of(context).primaryIconTheme,
                 title: Text(widget.pageName),
                 centerTitle: true,
               ),
               body: RefreshIndicator(
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: Theme.of(context).primaryColor,
                 onRefresh: () {
                   return NetworkManager().getPosts(context);
                 },
                 child: ListView.separated(
-                  separatorBuilder: (context, index) =>
-                      Divider(
-                        endIndent: 50,
-                        indent: 50,
-                        thickness: 2,
-                      ),
+                  separatorBuilder: (context, index) => Divider(
+                    endIndent: 50,
+                    indent: 50,
+                    thickness: 2,
+                  ),
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -70,6 +67,16 @@ class _NewsPageState extends State<NewsPage> {
                   },
                 ),
               ),
+              floatingActionButton: FloatingActionButton(
+
+                  tooltip: 'Add new post',
+                  child: Center(
+                    child: FaIcon(FontAwesomeIcons.plus),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => AddPost()));
+                  }),
             );
           } else {
             return Container(
@@ -84,10 +91,7 @@ class _NewsPageState extends State<NewsPage> {
                   SizedBox(height: 20),
                   Text(
                     'Loading',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .body1,
+                    style: Theme.of(context).textTheme.body1,
                   ),
                 ],
               ),

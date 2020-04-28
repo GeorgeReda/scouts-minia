@@ -40,25 +40,25 @@ class Constants {
   );
 
   static ThemeData darkTheme = ThemeData(
-    primaryColor: darkPrimary,
-    accentColor: darkBG,
-    primaryIconTheme: IconThemeData(color: darkText, size: 10),
-    backgroundColor: darkBG,
-    buttonColor: darkPrimary,
-    cursorColor: darkCursor,
-    dividerTheme: DividerThemeData(
-      color: Colors.grey.shade300,
-      indent: DividerIndent,
-      endIndent: DividerIndent,
-      thickness: 1,
-    ),
-    splashColor: darkCursor,
-    textSelectionColor: darkTextSelection,
-    textSelectionHandleColor: lightPrimary,
-    fontFamily: 'El Messiri',
-    appBarTheme: AppBarTheme(color: lighterBlack),
-    scaffoldBackgroundColor: darkBG,
-    textTheme: TextTheme(
-        body1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),
+      primaryColor: darkPrimary,
+      accentColor: darkBG,
+      primaryIconTheme: IconThemeData(color: darkText, size: 10),
+      backgroundColor: darkBG,
+      buttonColor: darkPrimary,
+      cursorColor: darkCursor,
+      dividerTheme: DividerThemeData(
+        color: Colors.grey.shade300,
+        indent: DividerIndent,
+        endIndent: DividerIndent,
+        thickness: 1,
+      ),
+      splashColor: darkCursor,
+      textSelectionColor: darkTextSelection,
+      textSelectionHandleColor: lightPrimary,
+      fontFamily: 'El Messiri',
+      appBarTheme: AppBarTheme(color: lighterBlack),
+      scaffoldBackgroundColor: darkBG,
+      textTheme: TextTheme(
+          body1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),
   );
 }

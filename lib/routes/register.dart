@@ -18,12 +18,12 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _key = GlobalKey<FormBuilderState>();
-  File _image;
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
 
+  File _image;
   String base64Image;
   String errMessage = 'Error uploading image';
   bool secureText = true;
