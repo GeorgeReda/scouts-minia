@@ -15,7 +15,7 @@ main() async {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Scouty',
-          home: MainScreen(),
+          home: SplashScreen(),
           theme: Constants.lightTheme,
           darkTheme: Constants.darkTheme,
           themeMode: appState.isDarkMode ? ThemeMode.dark : ThemeMode.light,

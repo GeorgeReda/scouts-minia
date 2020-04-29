@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:scouts_minia/components/archiveTile.dart';
+import 'package:scouts_minia/components/book.dart';
 import 'package:scouts_minia/components/posts.dart';
 import 'package:scouts_minia/routes/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //Todo: Add Shared Prefs
 class NetworkManager {
@@ -18,24 +21,24 @@ class NetworkManager {
       http.post(myUrl,
           headers: {'Accept': 'application/json'},
           body: {"email": "$email", "password": "$password"}).then((response) {
-        print(response.statusCode);
-        print(response.request.toString());
-        status = response.body.contains('error');
-        var data = jsonDecode(response.body.trim());
-        if (status) {
-          print('data : ${data["error"]}');
-        } else {
-          print('data : ${data["api token"]}');
-          prefs.setString('api token', data["api token"]);
-          prefs.setString('name', data["name"]);
-          prefs.setString('email', data["email"]);
-          prefs.setString('image', data["image"]);
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ));
-        }
+//        print(response.statusCode);
+//        print(response.request.toString());
+//        status = response.body.contains('error');
+//        var data = jsonDecode(response.body.trim());
+//        if (status) {
+//          print('data : ${data["error"]}');
+//        } else {
+//          print('data : ${data["api token"]}');
+//          prefs.setString('api token', data["api token"]);
+//          prefs.setString('name', data["name"]);
+//          prefs.setString('email', data["email"]);
+//          prefs.setString('image', data["image"]);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainScreen(),
+            ));
+//        }
       });
     } catch (e) {
       print(e);
@@ -63,16 +66,6 @@ class NetworkManager {
   registerData(String name, String email, String password, String phone, image,
       context) async {
     try {
-      if (null == image) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-                'An error has occurred ! Please add a photo and try again .'),
-          ),
-          duration: Duration(seconds: 2),
-        ));
-      }
       final prefs = await SharedPreferences.getInstance();
       String myUrl = '$serverUrl/user/register';
       http.post(myUrl, headers: {
@@ -81,6 +74,7 @@ class NetworkManager {
         "name": "$name",
         "email": "$email",
         "password": "$password",
+        "phone": "$phone",
         "image": image
       }).then((response) {
         status = response.body.contains('error');
@@ -133,7 +127,7 @@ class NetworkManager {
         ));
       }
       final prefs = await SharedPreferences.getInstance();
-      String myUrl = '$serverUrl';//Todo: Change Url
+      String myUrl = '$serverUrl/'; //Todo: Change Url
       http.post(myUrl, headers: {
         'Accept': 'application/json'
       }, body: {
@@ -233,6 +227,7 @@ class NetworkManager {
       );
     }
   }
+
   addPost(String title, String description, image, context) async {
     try {
       if (null == image) {
@@ -269,7 +264,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-            Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
             title: Text('An error has occurred . Please try again !'),
             actions: <Widget>[
               RaisedButton(
@@ -284,19 +279,122 @@ class NetworkManager {
     }
   }
 
-   getBooks() async {
+  getFiles(url,context) async {
+    // Fetch books and competitions
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api token');
       http.Response response = await http.get(
-        'http://www.json-generator.com/api/json/get/cjRAjawitK?indent=2',
+        '$url',
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenVal'
         },
       );
       var jsonData = json.decode(response.body);
-      List<PostItem> books = [];
-    } catch (e) {}
+      List<Book> books = [];
+      for (var i in jsonData) {
+        Book file = Book(
+          title: i['title'],
+          about: i['about'],
+          index: i['index'],
+          pic: i['picture'],
+          date: i['date'],
+          url: i['url'],
+        );
+        books.add(file);
+      }
+      return books;
+    } catch (e) {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('Couldn\' get books . Please check your connection !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
+    }
   }
+
+  launchURL(url, context) async {
+    if (await canLaunch(url.trim())) {
+      await launch(url.trim(),);
+    } else {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('Couldn\' launch url . Please try again !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
+    }
+  }
+  getArchive(context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var tokenVal = prefs.getString('api token');
+      http.Response response = await http.get(
+        'http://www.json-generator.com/api/json/get/bVdHHNnsmW?indent=2',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenVal'
+        },
+      );
+      var jsonData = json.decode(response.body);
+      List archive = [];
+      for (var i in jsonData) {
+        ArchiveTile post = ArchiveTile(
+          title: i['title'],
+          index: i['index'],
+          pic: i['picture'],
+          date: i['date'],
+          url: i['url'],
+        );
+        archive.add(post);
+      }
+      return archive;
+    } catch (e) {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            titleTextStyle:
+            Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+            title: Text('Couldn\' get books . Please check your connection !'),
+            actions: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text('Ok')),
+            ],
+          );
+        },
+      );
+    }
+  }
+
 }

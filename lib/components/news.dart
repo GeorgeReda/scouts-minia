@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scouts_minia/routes/news_page.dart';
 
 class NewsSections extends StatelessWidget {
-  final List<String> _text = ['إيبارشيتنا', 'العالم', 'مجموعتي'];
+  final List<String> _text = [
+    'أخبار مجموعاتنا',
+    'أخبار الأمانة العامة',
+    'أخبار محلية و دولية'
+  ];
   final List<IconData> _icons = [
-    FontAwesomeIcons.church,
-    FontAwesomeIcons.globe,
-    FontAwesomeIcons.users
+    FontAwesomeIcons.users,
+    FontAwesomeIcons.freeCodeCamp,
+    FontAwesomeIcons.globe
   ];
 
   @override

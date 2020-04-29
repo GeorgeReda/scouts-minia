@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'detailsPage.dart';
 
-class PostItem extends StatefulWidget {
+class PostItem extends StatelessWidget {
   final int index;
   final String name;
   final String about;
@@ -24,11 +24,6 @@ class PostItem extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PostItemState createState() => _PostItemState();
-}
-
-class _PostItemState extends State<PostItem> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -36,13 +31,13 @@ class _PostItemState extends State<PostItem> {
         child: Column(
           children: <Widget>[
             ListTile(
-              trailing: Text('${widget.date}'),
+              trailing: Text('$date'),
               contentPadding: EdgeInsets.zero,
               leading: CircleAvatar(
-                backgroundImage: NetworkImage('${widget.dp}'),
+                backgroundImage: NetworkImage('$dp'),
               ),
               title: Text(
-                "${widget.name}",
+                "$name",
                 style: Theme
                     .of(context)
                     .textTheme
@@ -54,7 +49,7 @@ class _PostItemState extends State<PostItem> {
               ),
             ),
             Text(
-              "${widget.about}",
+              "$about",
               style: Theme
                   .of(context)
                   .textTheme
@@ -64,9 +59,9 @@ class _PostItemState extends State<PostItem> {
               ),
             ),
             Hero(
-              tag: 'mainImage${widget.index}',
+              tag: 'mainImage$index',
               child: Image.network(
-                "${widget.pic}",
+                "$pic",
                 height: MediaQuery
                     .of(context)
                     .size
@@ -83,10 +78,10 @@ class _PostItemState extends State<PostItem> {
         onTap: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => Details(
-                pic: widget.pic,
-                name: widget.name,
-                index: widget.index,
-                details: widget.details,
+                pic: pic,
+                name: name,
+                index: index,
+                details: details,
               )));
         },
       ),
