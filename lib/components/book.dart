@@ -51,7 +51,9 @@ class Book extends StatelessWidget {
             ),
           ],
         ),
-        onTap: (){NetworkManager().launchURL(url, context);},
+        onTap: () {
+          NetworkManager().launchURL(url, context);
+        },
       ),
     );
   }

@@ -12,15 +12,16 @@ class PostItem extends StatelessWidget {
   final String date;
   final String details;
 
-  const PostItem({Key key,
-    @required this.index,
-    @required this.about,
-    @required this.email,
-    @required this.pic,
-    @required this.dp,
-    @required this.name,
-    @required this.date,
-    @required this.details})
+  const PostItem(
+      {Key key,
+      @required this.index,
+      @required this.about,
+      @required this.email,
+      @required this.pic,
+      @required this.dp,
+      @required this.name,
+      @required this.date,
+      @required this.details})
       : super(key: key);
 
   @override
@@ -38,51 +39,39 @@ class PostItem extends StatelessWidget {
               ),
               title: Text(
                 "$name",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.body1.copyWith(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
             Text(
               "$about",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .body1
-                  .copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             Hero(
               tag: 'mainImage$index',
               child: Image.network(
                 "$pic",
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 2,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
               ),
             ),
           ],
         ),
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Details(
-                pic: pic,
-                name: name,
-                index: index,
-                details: details,
-              )));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Details(
+                        pic: pic,
+                        name: name,
+                        index: index,
+                        details: details,
+                      )));
         },
       ),
     );

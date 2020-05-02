@@ -24,36 +24,26 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
       }
     });
   }
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: MediaQuery
-              .of(context)
-              .size
-              .height / 20,
-          bottom: MediaQuery
-              .of(context)
-              .size
-              .height / 20),
+          top: MediaQuery.of(context).size.height / 20,
+          bottom: MediaQuery.of(context).size.height / 20),
       child: Center(
         child: FadeTransition(
           opacity: _animation,
           child: Image.asset(
-            'images/logo1.jpeg',
-            height: MediaQuery
-                .of(context)
-                .size
-                .height / 3,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width / 2,
+            'images/logo2.png',
+            height: MediaQuery.of(context).size.height / 3,
+            width: MediaQuery.of(context).size.width / 2,
           ),
         ),
       ),

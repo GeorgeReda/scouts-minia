@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:scouts_minia/routes/accountDetails.dart';
+import 'package:scouts_minia/tools/network_manager.dart';
 import 'package:scouts_minia/tools/themeChanger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
-import 'login.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -14,9 +13,23 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  String name;
+  String email;
+  String image;
+
+  Future<Null> getSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name');
+      email = prefs.getString('email');
+      image = prefs.getString('image');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getSharedPrefs();
   }
 
   @override
@@ -26,18 +39,29 @@ class _SettingsState extends State<Settings> {
           child: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
+          // shows the user's info
           UserAccountsDrawerHeader(
-            accountName: Text('data'),
-            accountEmail: Text('data'),
-            currentAccountPicture: Image.asset('images/logo.png'),
+            accountName: Text(
+              '$name',
+              style: TextStyle(color: Constants.darkText, fontSize: 22),
+            ),
+            accountEmail: Text(
+              '$email',
+              style: TextStyle(color: Constants.darkText, fontSize: 18),
+            ),
+            currentAccountPicture: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage('http://placehold.it/300x300'),
+              ),
+            ),
             arrowColor: Constants.darkText,
           ),
           ReusableListTile(
             title: 'Edit account',
             icon: FontAwesomeIcons.exchangeAlt,
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AccountDetails()));
+              Navigator.pushNamed(context, 'accountDetails');
             },
           ),
           Card(
@@ -46,7 +70,7 @@ class _SettingsState extends State<Settings> {
             margin: EdgeInsets.all(8),
             child: SwitchListTile(
                 title: Text(
-                  'Change Theme',
+                  'Dark Mode',
                   style:
                       Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
                 ),
@@ -74,11 +98,8 @@ class _SettingsState extends State<Settings> {
                     actions: <Widget>[
                       RaisedButton(
                           onPressed: () {
-                            //Todo: Remove Shared Prefs
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Login()));
+                            NetworkManager().logOut();
+                            Navigator.pushReplacementNamed(context, 'login');
                           },
                           child: Text('yes')),
                       RaisedButton(
@@ -92,13 +113,6 @@ class _SettingsState extends State<Settings> {
               );
             },
           ),
-          RaisedButton(onPressed: () async {
-            final prefs = await SharedPreferences.getInstance();
-            print(prefs.getString('api token'));
-            print(prefs.getString('name'));
-            print(prefs.getString('email'));
-            print(prefs.getString('image'));
-          })
         ],
       )),
     );
@@ -130,7 +144,7 @@ class ReusableListTile extends StatelessWidget {
         ),
         trailing: FaIcon(
           icon,
-          color:Constants.darkPrimary,
+          color: Constants.darkPrimary,
         ),
         onTap: onTap,
       ),

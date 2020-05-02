@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scouts_minia/routes/mainScreen.dart';
 
 import '../components/form.dart';
 import '../constants.dart';
@@ -34,7 +33,10 @@ class _RegisterState extends State<Register> {
     setState(() {
       _image = image;
     });
-    base64Image = base64Encode(_image.readAsBytesSync());
+    if (image != null) {
+      base64Image = base64Encode(_image.readAsBytesSync());
+      print(base64Image);
+    }
   }
 
   togglePassword() {
@@ -116,14 +118,12 @@ class _RegisterState extends State<Register> {
                         enableInteractiveSelection: false,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            labelText: 'name',
-                            labelStyle: TextStyle(fontSize: 18),
-                            hintText: 'ScoutBoy',
-                            hintStyle: TextStyle(fontSize: 18),
-                            alignLabelWithHint: true),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          labelText: 'name',
+                          labelStyle: TextStyle(fontSize: 18),
+                        ),
                         controller: _usernameController,
                         validators: [
                           FormBuilderValidators.required(),
@@ -137,14 +137,12 @@ class _RegisterState extends State<Register> {
                         enableInteractiveSelection: false,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            labelText: 'email',
-                            labelStyle: TextStyle(fontSize: 18),
-                            hintText: 'i_love@scout.com',
-                            hintStyle: TextStyle(fontSize: 18),
-                            alignLabelWithHint: true),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          labelText: 'email',
+                          labelStyle: TextStyle(fontSize: 18),
+                        ),
                         controller: _emailController,
                         validators: [
                           FormBuilderValidators.required(),
@@ -165,9 +163,6 @@ class _RegisterState extends State<Register> {
                           ),
                           labelText: 'password',
                           labelStyle: TextStyle(fontSize: 18),
-                          hintText: 'Adg34Swr2',
-                          hintStyle: TextStyle(fontSize: 18),
-                          alignLabelWithHint: true,
                           suffixIcon: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: IconButton(
@@ -192,20 +187,20 @@ class _RegisterState extends State<Register> {
                         enableInteractiveSelection: false,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            labelText: 'Phone',
-                            labelStyle: TextStyle(fontSize: 18),
-                            hintText: '01234567890',
-                            hintStyle: TextStyle(fontSize: 18),
-                            alignLabelWithHint: true),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          labelText: 'Phone',
+                          labelStyle: TextStyle(fontSize: 18),
+                        ),
                         controller: _phoneController,
                         validators: [
                           FormBuilderValidators.required(),
                           FormBuilderValidators.numeric(),
-                          FormBuilderValidators.minLength(11),
-                          FormBuilderValidators.maxLength(11)
+                          FormBuilderValidators.minLength(11,
+                              errorText: 'Phone number length must be 11'),
+                          FormBuilderValidators.maxLength(11,
+                              errorText: 'Phone number length must be 11'),
                         ],
                       ),
                     )
@@ -219,10 +214,9 @@ class _RegisterState extends State<Register> {
                       _emailController.text.trim(),
                       _passwordController.text.trim(),
                       _phoneController.text.trim(),
-                      base64Image,
+                      base64Image.trim(),
                       context);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => MainScreen()));
+                  Navigator.pushReplacementNamed(context, 'mainScreen');
                 }
               }),
             ],

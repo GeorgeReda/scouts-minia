@@ -6,6 +6,7 @@ import '../constants.dart';
 
 class Competitions extends StatefulWidget {
   final url = 'http://www.json-generator.com/api/json/get/cfYmFEaPyq?indent=2';
+
   @override
   _CompetitionsState createState() => _CompetitionsState();
 }
@@ -22,30 +23,30 @@ class _CompetitionsState extends State<Competitions> {
               if (snapshot.data != null) {
                 return Scaffold(
                     body: RefreshIndicator(
-                      color: Theme.of(context).primaryColor,
-                      onRefresh: () {
-                        return NetworkManager().getFiles(widget.url, context);
-                      },
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                          endIndent: 50,
-                          indent: 50,
-                          thickness: 2,
-                        ),
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Book(
-                            title: snapshot.data[index].title,
-                            pic: snapshot.data[index].pic,
-                            index: snapshot.data[index].index,
-                            about: snapshot.data[index].about,
-                            date: snapshot.data[index].date,
-                            url: snapshot.data[index].url,
-                          );
-                        },
-                      ),
-                    ));
+                  color: Theme.of(context).primaryColor,
+                  onRefresh: () {
+                    return NetworkManager().getFiles(widget.url, context);
+                  },
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      endIndent: 50,
+                      indent: 50,
+                      thickness: 2,
+                    ),
+                    physics: BouncingScrollPhysics(),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Book(
+                        title: snapshot.data[index]['title'],
+                        pic: snapshot.data[index]['pic'],
+                        index: snapshot.data[index]['index'],
+                        about: snapshot.data[index]['about'],
+                        date: snapshot.data[index]['date'],
+                        url: snapshot.data[index]['url'],
+                      );
+                    },
+                  ),
+                ));
               } else {
                 return Container(
                   color: Theme.of(context).backgroundColor,
@@ -54,7 +55,8 @@ class _CompetitionsState extends State<Competitions> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
+                        valueColor:
+                            AlwaysStoppedAnimation(Constants.darkPrimary),
                         backgroundColor: Constants.lightPrimary,
                       ),
                       SizedBox(height: 20),

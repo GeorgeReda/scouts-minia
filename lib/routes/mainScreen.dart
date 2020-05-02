@@ -54,6 +54,7 @@ class _MainScreenState extends State<MainScreen> {
     });
     _pageController.jumpToPage(_pageIndex);
   }
+
   @override
   void initState() {
     super.initState();

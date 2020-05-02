@@ -34,12 +34,12 @@ class _LibraryState extends State<Library> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Book(
-                    title: snapshot.data[index].title,
-                    pic: snapshot.data[index].pic,
-                    index: snapshot.data[index].index,
-                    about: snapshot.data[index].about,
-                    date: snapshot.data[index].date,
-                    url: snapshot.data[index].url,
+                    title: snapshot.data[index]['title'],
+                    pic: snapshot.data[index]['pic'],
+                    index: snapshot.data[index]['index'],
+                    about: snapshot.data[index]['about'],
+                    date: snapshot.data[index]['date'],
+                    url: snapshot.data[index]['url'],
                   );
                 },
               ),

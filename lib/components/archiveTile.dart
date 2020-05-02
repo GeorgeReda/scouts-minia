@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scouts_minia/routes/archive_images.dart';
 
 class ArchiveTile extends StatelessWidget {
   final index;
@@ -20,9 +21,8 @@ class ArchiveTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-//          return ArchiveImgs(url); Todo: Make the archive images .
-          return Container();
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ArchiveImgs(url: url);
         }));
       },
       child: GridTile(

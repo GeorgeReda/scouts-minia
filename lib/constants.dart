@@ -17,27 +17,29 @@ class Constants {
   static const double DividerIndent = 10;
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: lightPrimary,
-    accentColor: lightBG,
-    primaryIconTheme: IconThemeData(color: lightBG, size: 10),
-    backgroundColor: lightBG,
-    buttonColor: lightPrimary,
-    cursorColor: lightCursor,
-    dividerTheme: DividerThemeData(
-      color: Colors.grey.shade300,
-      indent: DividerIndent,
-      endIndent: DividerIndent,
-      thickness: 1,
-    ),
-    splashColor: lightCursor,
-    textSelectionColor: lightTextSelection,
-    textSelectionHandleColor: lightPrimary,
-    fontFamily: 'El Messiri',
-    appBarTheme: AppBarTheme(
-      color: lightPrimary,
-    ),
-    scaffoldBackgroundColor: lightBG,
-  );
+      primaryColor: lightPrimary,
+      accentColor: lightBG,
+      primaryIconTheme: IconThemeData(color: lightBG, size: 10),
+      backgroundColor: lightBG,
+      buttonColor: lightPrimary,
+      cursorColor: lightCursor,
+      dividerTheme: DividerThemeData(
+        color: Colors.grey.shade300,
+        indent: DividerIndent,
+        endIndent: DividerIndent,
+        thickness: 1,
+      ),
+      splashColor: lightCursor,
+      textSelectionColor: lightTextSelection,
+      textSelectionHandleColor: lightPrimary,
+      fontFamily: 'El Messiri',
+      appBarTheme: AppBarTheme(
+        color: lightPrimary,
+      ),
+      scaffoldBackgroundColor: lightBG,
+      iconTheme: IconThemeData(color: lightPrimary),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: lightBG));
 
   static ThemeData darkTheme = ThemeData(
       primaryColor: darkPrimary,
@@ -60,5 +62,7 @@ class Constants {
       scaffoldBackgroundColor: darkBG,
       textTheme: TextTheme(
           body1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),
-  );
+      iconTheme: IconThemeData(color: darkText),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: darkBG));
 }

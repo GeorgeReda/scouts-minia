@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:scouts_minia/components/archiveTile.dart';
+import 'package:scouts_minia/components/archive_image_tile.dart';
 import 'package:scouts_minia/tools/network_manager.dart';
 
 import '../constants.dart';
 
-class Archive extends StatefulWidget {
+class ArchiveImgs extends StatefulWidget {
+  final url;
+
+  const ArchiveImgs({Key key, @required this.url}) : super(key: key);
+
   @override
-  _ArchiveState createState() => _ArchiveState();
+  _ArchiveImgsState createState() => _ArchiveImgsState();
 }
 
-class _ArchiveState extends State<Archive> {
+class _ArchiveImgsState extends State<ArchiveImgs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(8),
         child: FutureBuilder(
-          future: NetworkManager().getArchive(context),
+          future: NetworkManager().getArchiveImgs(context),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return RefreshIndicator(
                 color: Theme.of(context).primaryColor,
                 onRefresh: () {
-                  return NetworkManager().getArchive(context);
+                  return NetworkManager().getArchiveImgs(context);
                 },
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -33,13 +37,9 @@ class _ArchiveState extends State<Archive> {
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ArchiveTile(
-                      title: snapshot.data[index]['title'],
-                      pic: snapshot.data[index]['pic'],
-                      index: snapshot.data[index]['index'],
-                      date: snapshot.data[index]['date'],
-                      url: snapshot.data[index]['url'],
-                    );
+                    return ArchiveImgTile(
+                        url: snapshot.data[index].url,
+                        img: snapshot.data[index].img);
                   },
                 ),
               );

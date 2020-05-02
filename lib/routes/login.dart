@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scouts_minia/components/form.dart';
 import 'package:scouts_minia/components/login_logo.dart';
 import 'package:scouts_minia/constants.dart';
-import 'package:scouts_minia/routes/register.dart';
 import 'package:scouts_minia/tools/network_manager.dart';
 
 class Login extends StatefulWidget {
@@ -51,14 +50,12 @@ class _LoginState extends State<Login> {
                       enableInteractiveSelection: false,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          labelText: 'email',
-                          labelStyle: TextStyle(fontSize: 18),
-                          hintText: 'i_love@scout.com',
-                          hintStyle: TextStyle(fontSize: 18),
-                          alignLabelWithHint: true),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        labelText: 'email',
+                        labelStyle: TextStyle(fontSize: 18),
+                      ),
                       controller: _emailController,
                       validators: [
                         FormBuilderValidators.required(),
@@ -79,9 +76,6 @@ class _LoginState extends State<Login> {
                         ),
                         labelText: 'password',
                         labelStyle: TextStyle(fontSize: 18),
-                        hintText: 'Something your friends doesn\'t know',
-                        hintStyle: TextStyle(fontSize: 18),
-                        alignLabelWithHint: true,
                         suffixIcon: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: IconButton(
@@ -133,12 +127,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Register(),
-                    ),
-                  );
+                  Navigator.pushReplacementNamed(context, 'register');
                 },
               ),
             )

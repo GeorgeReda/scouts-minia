@@ -140,11 +140,8 @@ class _AccountDetailsState extends State<AccountDetails> {
               ),
               FormButton(onPressed: () {
                 if (_key.currentState.validate()) {
-                  NetworkManager().editData(
-                      _usernameController.text.trim(),
-                      _emailController.text.trim(),
-                      base64Image,
-                      context);
+                  NetworkManager().editData(_usernameController.text.trim(),
+                      _emailController.text.trim(), base64Image, context);
                 }
               })
             ],
