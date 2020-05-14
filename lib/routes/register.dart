@@ -115,7 +115,6 @@ class _RegisterState extends State<Register> {
                       padding: const EdgeInsets.all(8.0),
                       child: FormBuilderTextField(
                         attribute: 'name',
-                        enableInteractiveSelection: false,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -134,7 +133,6 @@ class _RegisterState extends State<Register> {
                       padding: const EdgeInsets.all(8.0),
                       child: FormBuilderTextField(
                         attribute: 'email',
-                        enableInteractiveSelection: false,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -156,7 +154,6 @@ class _RegisterState extends State<Register> {
                         attribute: 'password',
                         maxLines: 1,
                         obscureText: secureText,
-                        enableInteractiveSelection: false,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -184,7 +181,6 @@ class _RegisterState extends State<Register> {
                       padding: const EdgeInsets.all(8.0),
                       child: FormBuilderTextField(
                         attribute: 'phone',
-                        enableInteractiveSelection: false,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(

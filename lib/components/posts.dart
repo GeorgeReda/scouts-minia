@@ -39,7 +39,7 @@ class PostItem extends StatelessWidget {
               ),
               title: Text(
                 "$name",
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText1.copyWith(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -47,7 +47,7 @@ class PostItem extends StatelessWidget {
             ),
             Text(
               "$about",
-              style: Theme.of(context).textTheme.body1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),

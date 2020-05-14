@@ -71,8 +71,10 @@ class _SettingsState extends State<Settings> {
             child: SwitchListTile(
                 title: Text(
                   'Dark Mode',
-                  style:
-                      Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontSize: 18),
                 ),
                 activeColor: Constants.lightPrimary,
                 value: Provider.of<ThemeChanger>(context).isDarkMode,
@@ -92,7 +94,7 @@ class _SettingsState extends State<Settings> {
                     backgroundColor: Theme.of(context).backgroundColor,
                     titleTextStyle: Theme.of(context)
                         .textTheme
-                        .body1
+                        .bodyText1
                         .copyWith(fontSize: 18),
                     title: Text('Are you sure you want to logout?'),
                     actions: <Widget>[
@@ -140,7 +142,7 @@ class ReusableListTile extends StatelessWidget {
       child: ListTile(
         title: Text(
           title,
-          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+          style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
         ),
         trailing: FaIcon(
           icon,

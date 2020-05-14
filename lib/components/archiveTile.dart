@@ -25,16 +25,18 @@ class ArchiveTile extends StatelessWidget {
           return ArchiveImgs(url: url);
         }));
       },
-      child: GridTile(
-        child: Image.network('$pic'),
-        footer: GridTileBar(
-          title: Text(
-            '$title',
-            style: Theme.of(context).textTheme.body1,
+      child: Card(
+        child: GridTile(
+          child: Image.network('$pic'),
+          footer: GridTileBar(
+            title: Text(
+              '$title',
+              style: Theme.of(context).textTheme.body1,
+            ),
+            backgroundColor: Theme.of(context).backgroundColor,
+            subtitle: Text('$date',
+                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12)),
           ),
-          backgroundColor: Theme.of(context).backgroundColor,
-          subtitle: Text('$date',
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12)),
         ),
       ),
     );

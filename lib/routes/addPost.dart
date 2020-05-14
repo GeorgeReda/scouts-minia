@@ -79,19 +79,18 @@ class _AddPostState extends State<AddPost> {
                   child: FormBuilderTextField(
                     maxLength: 150,
                     attribute: 'name',
-                    enableInteractiveSelection: false,
                     keyboardType: TextInputType.text,
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText1,
                     decoration: InputDecoration(
                         focusColor: Colors.red,
                         labelText: 'title',
                         labelStyle: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).textTheme.body1.color),
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         hintText: 'title',
                         hintStyle: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).textTheme.body1.color),
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         alignLabelWithHint: true),
                     controller: _titleController,
                     validators: [
@@ -103,18 +102,17 @@ class _AddPostState extends State<AddPost> {
                   padding: const EdgeInsets.all(8.0),
                   child: FormBuilderTextField(
                     attribute: 'description',
-                    enableInteractiveSelection: false,
                     keyboardType: TextInputType.text,
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText1,
                     decoration: InputDecoration(
                         labelText: 'description',
                         labelStyle: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).textTheme.body1.color),
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         hintText: 'title',
                         hintStyle: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).textTheme.body1.color),
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         alignLabelWithHint: true),
                     controller: _descriptionController,
                     validators: [

@@ -47,7 +47,6 @@ class _LoginState extends State<Login> {
                     padding: const EdgeInsets.all(8.0),
                     child: FormBuilderTextField(
                       attribute: 'email',
-                      enableInteractiveSelection: false,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -69,7 +68,6 @@ class _LoginState extends State<Login> {
                       attribute: 'password',
                       maxLines: 1,
                       obscureText: secureText,
-                      enableInteractiveSelection: false,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),

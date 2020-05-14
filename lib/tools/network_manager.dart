@@ -28,7 +28,7 @@ class NetworkManager {
               return AlertDialog(
                 backgroundColor: Theme.of(context).backgroundColor,
                 titleTextStyle:
-                    Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                    Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
                 title: Text(
                     'There is no user with this account . Please register !'),
                 actions: <Widget>[
@@ -45,12 +45,13 @@ class NetworkManager {
         if (response.body.contains('error')) {
           print('data : ${data["error"]}');
         } else {
-          prefs.setBool('state', true);
-          prefs.setString('api_token', data["api_token"]);
-          prefs.setString('name', data["name"]);
-          prefs.setString('email', data["email"]);
-          prefs.setInt('mobile', data["mobile"]);
-          prefs.setString('image', data["image"]);
+          prefs
+            ..setBool('state', true)
+            ..setString('api_token', data["api_token"])
+            ..setString('name', data["name"])
+            ..setString('email', data["email"])
+            ..setInt('mobile', data["mobile"])
+            ..setString('image', data["image"]);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -65,7 +66,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('An error has occurred . Please try again !'),
             actions: <Widget>[
               RaisedButton(
@@ -105,7 +106,7 @@ class NetworkManager {
               return AlertDialog(
                 backgroundColor: Theme.of(context).backgroundColor,
                 titleTextStyle:
-                    Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                    Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
                 title: Text('An error has occurred . Please try again !'),
                 actions: <Widget>[
                   RaisedButton(
@@ -118,12 +119,13 @@ class NetworkManager {
             },
           );
         } else {
-          prefs.setBool('state', true);
-          prefs.setString('api_token', data["api_token"]);
-          prefs.setString('name', name);
-          prefs.setString('email', email);
-          prefs.setInt('mobile', int.parse(mobile));
-          prefs.setString('image', image);
+          prefs
+            ..setBool('state', true)
+            ..setString('api_token', data["api_token"])
+            ..setString('name', name)
+            ..setString('email', email)
+            ..setInt('mobile', int.parse(mobile))
+            ..setString('image', image);
           Navigator.pushReplacementNamed(context, 'mainScreen');
         }
       });
@@ -135,7 +137,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('An error has occurred . Please try again !'),
             actions: <Widget>[
               RaisedButton(
@@ -153,12 +155,7 @@ class NetworkManager {
   // Logging out and removing all user's data from the device
   logOut() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('state', false);
-    prefs.remove('api_token');
-    prefs.remove('name');
-    prefs.remove('email');
-    prefs.remove('mobile');
-    prefs.remove('image');
+    prefs.clear();
   }
 
   // Editing user's data in the device and globally
@@ -181,9 +178,10 @@ class NetworkManager {
           print('data : ${data["name"]}');
           print('data : ${data["email"]}');
           print('data : ${data["image"]}');
-          prefs.setString('name', name);
-          prefs.setString('email', email);
-          prefs.setString('image', image);
+          prefs
+            ..setString('name', name)
+            ..setString('email', email)
+            ..setString('image', image);
           Navigator.pop(context);
         }
       });
@@ -195,7 +193,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('An error has occurred . Please try again !'),
             actions: <Widget>[
               RaisedButton(
@@ -247,7 +245,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('Couldn\' get posts . Please check your connection !'),
             actions: <Widget>[
               RaisedButton(
@@ -289,7 +287,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('An error has occurred . Please try again !'),
             actions: <Widget>[
               RaisedButton(
@@ -337,7 +335,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('Couldn\' get books . Please check your connection !'),
             actions: <Widget>[
               RaisedButton(
@@ -354,9 +352,7 @@ class NetworkManager {
 
   launchURL(url, context) async {
     if (await canLaunch(url.trim())) {
-      await launch(
-        url.trim(),
-      );
+      await launch(url.trim(), forceWebView: true);
     } else {
       showDialog<void>(
         context: context,
@@ -364,8 +360,8 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
-            title: Text('Couldn\' launch url . Please try again !'),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
+            title: Text('Couldn\'t launch url . Please try again !'),
             actions: <Widget>[
               RaisedButton(
                   onPressed: () {
@@ -410,7 +406,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('Couldn\' get books . Please check your connection !'),
             actions: <Widget>[
               RaisedButton(
@@ -450,7 +446,7 @@ class NetworkManager {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             titleTextStyle:
-                Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
             title: Text('Couldn\' get images . Please check your connection !'),
             actions: <Widget>[
               RaisedButton(

@@ -95,18 +95,17 @@ class _AccountDetailsState extends State<AccountDetails> {
                 padding: const EdgeInsets.all(8.0),
                 child: FormBuilderTextField(
                   attribute: 'name',
-                  enableInteractiveSelection: false,
                   keyboardType: TextInputType.emailAddress,
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText1,
                   decoration: InputDecoration(
                       labelText: 'name',
                       labelStyle: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).textTheme.body1.color),
+                          color: Theme.of(context).textTheme.bodyText1.color),
                       hintText: 'ScoutBoy',
                       hintStyle: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).textTheme.body1.color),
+                          color: Theme.of(context).textTheme.bodyText1.color),
                       alignLabelWithHint: true),
                   controller: _usernameController,
                   validators: [
@@ -118,18 +117,17 @@ class _AccountDetailsState extends State<AccountDetails> {
                 padding: const EdgeInsets.all(8.0),
                 child: FormBuilderTextField(
                   attribute: 'email',
-                  enableInteractiveSelection: false,
                   keyboardType: TextInputType.emailAddress,
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText1,
                   decoration: InputDecoration(
                       labelText: 'email',
                       labelStyle: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).textTheme.body1.color),
+                          color: Theme.of(context).textTheme.bodyText1.color),
                       hintText: 'i_love@scout.com',
                       hintStyle: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).textTheme.body1.color),
+                          color: Theme.of(context).textTheme.bodyText1.color),
                       alignLabelWithHint: true),
                   controller: _emailController,
                   validators: [

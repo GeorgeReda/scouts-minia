@@ -61,7 +61,7 @@ class Constants {
       appBarTheme: AppBarTheme(color: lighterBlack),
       scaffoldBackgroundColor: darkBG,
       textTheme: TextTheme(
-          body1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),
+          bodyText1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),
       iconTheme: IconThemeData(color: darkText),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: darkBG));

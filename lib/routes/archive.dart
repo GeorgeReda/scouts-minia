@@ -57,7 +57,7 @@ class _ArchiveState extends State<Archive> {
                     SizedBox(height: 20),
                     Text(
                       'Loading',
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
