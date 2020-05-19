@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:scouts_minia/tools/network_manager.dart';
 
 import '../components/posts.dart';
@@ -31,14 +32,14 @@ class _NewsPageState extends State<NewsPage> {
       ),
       body: FutureBuilder(
           // Fetches the posts from the server then build their widgets
-          future: NetworkManager().getPosts(context),
+          future: NetworkManager().getPosts(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               // Re-fetches the data
               return RefreshIndicator(
                 color: Theme.of(context).primaryColor,
                 onRefresh: () {
-                  return NetworkManager().getPosts(context);
+                  return NetworkManager().getPosts();
                 },
                 child: ListView.separated(
                   separatorBuilder: (context, index) => Divider(
@@ -86,7 +87,7 @@ class _NewsPageState extends State<NewsPage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, 'addPost');
+          Get.toNamed('addPost');
         },
         child: Center(
           child: FaIcon(

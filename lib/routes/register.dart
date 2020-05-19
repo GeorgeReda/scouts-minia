@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../components/form.dart';
@@ -210,9 +211,8 @@ class _RegisterState extends State<Register> {
                       _emailController.text.trim(),
                       _passwordController.text.trim(),
                       _phoneController.text.trim(),
-                      base64Image.trim(),
-                      context);
-                  Navigator.pushReplacementNamed(context, 'mainScreen');
+                      base64Image.trim());
+                  Get.offAndToNamed('mainScreen');
                 }
               }),
             ],

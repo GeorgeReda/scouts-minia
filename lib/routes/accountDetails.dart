@@ -81,10 +81,9 @@ class _AccountDetailsState extends State<AccountDetails> {
                                 )
                               : Container(
                                   decoration: BoxDecoration(),
-                                  child: Image.file(_image,
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.fill)),
+                                  child: CircleAvatar(
+                                    backgroundImage: FileImage(_image),
+                                  )),
                         ),
                       ),
                     ),
@@ -139,7 +138,7 @@ class _AccountDetailsState extends State<AccountDetails> {
               FormButton(onPressed: () {
                 if (_key.currentState.validate()) {
                   NetworkManager().editData(_usernameController.text.trim(),
-                      _emailController.text.trim(), base64Image, context);
+                      _emailController.text.trim(), base64Image);
                 }
               })
             ],

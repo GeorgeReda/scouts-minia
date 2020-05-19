@@ -1,19 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:scouts_minia/components/archive_image_tile.dart';
-import 'package:scouts_minia/routes/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NetworkManager {
-  static const String serverUrl =
-      'http://scoutsapp1.000webhostapp.com/public/api';
+  final String serverUrl = 'http://scoutsapp1.000webhostapp.com/public/api';
   var status;
 
   // Logging in and saving the info of the user
-  loginData(String email, String password, BuildContext context) async {
+  loginData(String email, String password) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String myUrl = '$serverUrl/user/login';
@@ -22,28 +21,10 @@ class NetworkManager {
           body: {"email": "$email", "password": "$password"}).then((response) {
         var data = jsonDecode(response.body.trim());
         if (response.body.contains('unauthenticated')) {
-          showDialog<void>(
-            context: context,
-            builder: (BuildContext dialogContext) {
-              return AlertDialog(
-                backgroundColor: Theme.of(context).backgroundColor,
-                titleTextStyle:
-                    Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-                title: Text(
-                    'There is no user with this account . Please register !'),
-                actions: <Widget>[
-                  RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(dialogContext);
-                      },
-                      child: Text('Ok')),
-                ],
-              );
-            },
-          );
+          showModDialog(
+              'There is no user with this account . Please register !');
         }
         if (response.body.contains('error')) {
-          print('data : ${data["error"]}');
         } else {
           prefs
             ..setBool('state', true)
@@ -52,39 +33,23 @@ class NetworkManager {
             ..setString('email', data["email"])
             ..setInt('mobile', data["mobile"])
             ..setString('image', data["image"]);
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ));
+          Get.offAllNamed('mainScreen');
         }
       });
     } catch (e) {
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('An error has occurred . Please try again !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('An error has occurred . Please try again !');
     }
   }
 
   // Registering and saving the info of the user
 
-  registerData(String name, String email, String password, String mobile,
-      String image, context) async {
+  registerData(
+    String name,
+    String email,
+    String password,
+    String mobile,
+    String image,
+  ) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String myUrl = '$serverUrl/user/register';
@@ -100,24 +65,7 @@ class NetworkManager {
         status = response.body.contains('error');
         var data = jsonDecode(response.body.toString().trim());
         if (status) {
-          showDialog<void>(
-            context: context,
-            builder: (BuildContext dialogContext) {
-              return AlertDialog(
-                backgroundColor: Theme.of(context).backgroundColor,
-                titleTextStyle:
-                    Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-                title: Text('An error has occurred . Please try again !'),
-                actions: <Widget>[
-                  RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(dialogContext);
-                      },
-                      child: Text('Ok')),
-                ],
-              );
-            },
-          );
+          showModDialog('An error has occurred . Please try again !');
         } else {
           prefs
             ..setBool('state', true)
@@ -126,29 +74,11 @@ class NetworkManager {
             ..setString('email', email)
             ..setInt('mobile', int.parse(mobile))
             ..setString('image', image);
-          Navigator.pushReplacementNamed(context, 'mainScreen');
+          Get.offAllNamed('mainScreen');
         }
       });
     } catch (e) {
-      print(e);
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('An error has occurred . Please try again !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('An error has occurred . Please try again !');
     }
   }
 
@@ -159,7 +89,11 @@ class NetworkManager {
   }
 
   // Editing user's data in the device and globally
-  editData(String name, String email, image, context) async {
+  editData(
+    String name,
+    String email,
+    image,
+  ) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String myUrl = '$serverUrl/'; //Todo: Change Url
@@ -173,43 +107,22 @@ class NetworkManager {
         status = response.body.contains('error');
         var data = jsonDecode(response.body.trim());
         if (status) {
-          print('data : ${data["error"]}');
+          showModDialog(data);
         } else {
-          print('data : ${data["name"]}');
-          print('data : ${data["email"]}');
-          print('data : ${data["image"]}');
           prefs
             ..setString('name', name)
             ..setString('email', email)
             ..setString('image', image);
-          Navigator.pop(context);
+          Get.close(1);
         }
       });
     } catch (e) {
-      print(e);
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('An error has occurred . Please try again !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('An error has occurred . Please try again !');
     }
   }
 
   // getting posts
-  getPosts(context) async {
+  getPosts() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api token');
@@ -238,30 +151,16 @@ class NetworkManager {
       }
       return posts;
     } catch (e) {
-      print(e);
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('Couldn\' get posts . Please check your connection !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('Couldn\' get posts . Please check your connection !');
     }
   }
 
   // It's just self explained
-  addPost(String title, String content, image, context) async {
+  addPost(
+    String title,
+    String content,
+    image,
+  ) async {
     try {
       String myUrl = '$serverUrl/addposts';
       http.post(myUrl, headers: {
@@ -274,36 +173,20 @@ class NetworkManager {
         status = response.body.contains('error');
         var data = jsonDecode(response.body.trim());
         if (status) {
-          print('data : ${data["error"]}');
+          showModDialog(data);
         } else {
-          Navigator.pop(context);
+          Get.close(1);
         }
       });
     } catch (e) {
-      print(e);
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('An error has occurred . Please try again !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('An error has occurred . Please try again !');
     }
   }
 
   // files means books for library and docs for competitions
-  getFiles(url, context) async {
+  getFiles(
+    url,
+  ) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api_token');
@@ -329,53 +212,21 @@ class NetworkManager {
       }
       return books;
     } catch (e) {
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('Couldn\' get books . Please check your connection !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('Couldn\' get books . Please check your connection !');
     }
   }
 
-  launchURL(url, context) async {
+  launchURL(
+    url,
+  ) async {
     if (await canLaunch(url.trim())) {
       await launch(url.trim(), forceWebView: true);
     } else {
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('Couldn\'t launch url . Please try again !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('Couldn\'t launch url . Please try again !');
     }
   }
 
-  getArchive(context) async {
+  getArchive() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api_token');
@@ -400,28 +251,11 @@ class NetworkManager {
       }
       return archive;
     } catch (e) {
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('Couldn\' get books . Please check your connection !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('Couldn\' get Archive . Please check your connection !');
     }
   }
 
-  getArchiveImgs(context) async {
+  getArchiveImgs() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api_token');
@@ -440,24 +274,25 @@ class NetworkManager {
       }
       return tiles;
     } catch (e) {
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            titleTextStyle:
-                Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-            title: Text('Couldn\' get images . Please check your connection !'),
-            actions: <Widget>[
-              RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text('Ok')),
-            ],
-          );
-        },
-      );
+      showModDialog('Couldn\' get images . Please check your connection !');
     }
   }
+}
+
+// ShowModified Dialog
+showModDialog(
+  String title,
+) {
+  return AlertDialog(
+    backgroundColor: Get.theme.backgroundColor,
+    titleTextStyle: Get.theme.textTheme.bodyText1.copyWith(fontSize: 18),
+    title: Text(title),
+    actions: <Widget>[
+      RaisedButton(
+          onPressed: () {
+            Get.close(1);
+          },
+          child: Text('Ok')),
+    ],
+  );
 }

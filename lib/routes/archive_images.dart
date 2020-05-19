@@ -20,13 +20,13 @@ class _ArchiveImgsState extends State<ArchiveImgs> {
       body: Padding(
         padding: EdgeInsets.all(8),
         child: FutureBuilder(
-          future: NetworkManager().getArchiveImgs(context),
+          future: NetworkManager().getArchiveImgs(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return RefreshIndicator(
                 color: Theme.of(context).primaryColor,
                 onRefresh: () {
-                  return NetworkManager().getArchiveImgs(context);
+                  return NetworkManager().getArchiveImgs();
                 },
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

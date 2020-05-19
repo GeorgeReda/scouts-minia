@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:scouts_minia/routes/news_page.dart';
 
 class NewsSections extends StatelessWidget {
@@ -52,32 +53,25 @@ class _ButtonContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: RaisedButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      color: Theme.of(context).primaryColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          FaIcon(
-            icon,
-            color: Colors.white,
-            size: 50,
-          ),
-          SizedBox(width: 15),
-          Text(
-            text,
-            style: TextStyle(color: Colors.white, fontSize: 32),
-          )
-        ],
-      ),
-      onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => NewsPage(
-                    pageName: text,
-                    pageIcon: icon,
-                  ))),
-    ));
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Theme.of(context).primaryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                FaIcon(
+                  icon,
+                  color: Colors.white,
+                  size: 50,
+                ),
+                SizedBox(width: 15),
+                Text(
+                  text,
+                  style: TextStyle(color: Colors.white, fontSize: 32),
+                )
+              ],
+            ),
+            onPressed: () => Get.to(NewsPage(pageName: text, pageIcon: icon))));
   }
 }

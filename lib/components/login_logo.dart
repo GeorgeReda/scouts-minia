@@ -41,7 +41,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
         child: FadeTransition(
           opacity: _animation,
           child: Image.asset(
-            'images/logo2.png',
+            'images/logo1.jpg',
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width / 2,
           ),

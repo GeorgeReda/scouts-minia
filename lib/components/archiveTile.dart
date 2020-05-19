@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:scouts_minia/routes/archive_images.dart';
 
 class ArchiveTile extends StatelessWidget {
@@ -21,9 +22,7 @@ class ArchiveTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ArchiveImgs(url: url);
-        }));
+        Get.to(ArchiveImgs(url: url));
       },
       child: Card(
         child: GridTile(
@@ -31,11 +30,14 @@ class ArchiveTile extends StatelessWidget {
           footer: GridTileBar(
             title: Text(
               '$title',
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             backgroundColor: Theme.of(context).backgroundColor,
             subtitle: Text('$date',
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12)),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontSize: 12)),
           ),
         ),
       ),

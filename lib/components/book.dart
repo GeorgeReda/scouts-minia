@@ -31,7 +31,7 @@ class Book extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 "$title",
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText1.copyWith(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -39,7 +39,7 @@ class Book extends StatelessWidget {
             ),
             Text(
               "$about",
-              style: Theme.of(context).textTheme.body1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -52,7 +52,7 @@ class Book extends StatelessWidget {
           ],
         ),
         onTap: () {
-          NetworkManager().launchURL(url, context);
+          NetworkManager().launchURL(url);
         },
       ),
     );

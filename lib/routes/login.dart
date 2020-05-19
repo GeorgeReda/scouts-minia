@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:scouts_minia/components/form.dart';
 import 'package:scouts_minia/components/login_logo.dart';
 import 'package:scouts_minia/constants.dart';
@@ -113,7 +114,7 @@ class _LoginState extends State<Login> {
               _key.currentState.validate();
               if (_key.currentState.validate()) {
                 NetworkManager().loginData(_emailController.text.trim(),
-                    _passwordController.text.trim(), context);
+                    _passwordController.text.trim());
               }
             }),
             Center(
@@ -125,7 +126,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, 'register');
+                  Get.toNamed('register');
                 },
               ),
             )

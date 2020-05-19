@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:scouts_minia/routes/accountDetails.dart';
 import 'package:scouts_minia/routes/addPost.dart';
 import 'package:scouts_minia/routes/login.dart';
 import 'package:scouts_minia/routes/register.dart';
-import 'package:scouts_minia/tools/themeChanger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:get/get.dart';
 import 'constants.dart';
 import 'routes/mainScreen.dart';
 
+//Todo: implement [Get]
 main() {
   runApp(MyApp());
 }
@@ -23,28 +22,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provider for changing from light mode to dark mode and vice versa
-    return ChangeNotifierProvider<ThemeChanger>(
-      create: (_) => ThemeChanger(),
-      child: Consumer<ThemeChanger>(
-        builder: (context, appState, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Nor El Alam Scouts',
-            home: SplashScreen(),
-            theme: Constants.lightTheme,
-            darkTheme: Constants.darkTheme,
-            themeMode: appState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            routes: {
-              'mainScreen': (ctx) => MainScreen(),
-              'login': (ctx) => Login(),
-              'register': (ctx) => Register(),
-              'addPost': (ctx) => AddPost(),
-              'accountDetails': (ctx) => AccountDetails()
-            },
-          );
-        },
-      ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Nor El Alam Scouts',
+      home: SplashScreen(),
+      theme: Constants.lightTheme,
+      darkTheme: Constants.darkTheme,
+      themeMode: ThemeMode.light,
+      namedRoutes: {
+        'mainScreen': GetRoute(page: MainScreen()),
+        'login': GetRoute(page: Login()),
+        'register': GetRoute(page: Register()),
+        'addPost': GetRoute(page: AddPost()),
+        'accountDetails': GetRoute(page: AccountDetails())
+      },
     );
   }
 }
@@ -61,9 +52,9 @@ class _SplashScreenState extends State<SplashScreen> {
       final prefs = await SharedPreferences.getInstance();
       final value = prefs.getBool('state') ?? false;
       if (value != true) {
-        Navigator.pushReplacementNamed(context, 'login');
+        Get.toNamed('login');
       } else {
-        Navigator.pushReplacementNamed(context, 'mainScreen');
+        Get.toNamed('mainScreen');
       }
     });
   }
@@ -79,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       color: Colors.white,
       child: Center(
-        child: Image.asset('images/logo1.png'),
+        child: Image.asset('images/logo1.jpg'),
       ),
     );
   }

@@ -47,7 +47,7 @@ class Details extends StatelessWidget {
                     details,
                     style: Theme.of(context)
                         .textTheme
-                        .body1
+                        .bodyText1
                         .copyWith(fontSize: 18),
                   ),
                 )

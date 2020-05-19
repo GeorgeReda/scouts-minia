@@ -18,14 +18,14 @@ class _CompetitionsState extends State<Competitions> {
       body: Center(
         child: Scaffold(
           body: FutureBuilder(
-            future: NetworkManager().getFiles(widget.url, context),
+            future: NetworkManager().getFiles(widget.url,),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data != null) {
                 return Scaffold(
                     body: RefreshIndicator(
                   color: Theme.of(context).primaryColor,
                   onRefresh: () {
-                    return NetworkManager().getFiles(widget.url, context);
+                    return NetworkManager().getFiles(widget.url);
                   },
                   child: ListView.separated(
                     separatorBuilder: (context, index) => Divider(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'detailsPage.dart';
 
@@ -63,15 +64,12 @@ class PostItem extends StatelessWidget {
           ],
         ),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Details(
-                        pic: pic,
-                        name: name,
-                        index: index,
-                        details: details,
-                      )));
+          Get.to(Details(
+            pic: pic,
+            name: name,
+            index: index,
+            details: details,
+          ));
         },
       ),
     );

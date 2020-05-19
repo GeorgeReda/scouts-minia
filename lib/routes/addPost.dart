@@ -125,8 +125,7 @@ class _AddPostState extends State<AddPost> {
                     NetworkManager().addPost(
                         _titleController.text.trim(),
                         _descriptionController.text.trim(),
-                        base64Image,
-                        context);
+                        base64Image);
                   }
                 })
               ],

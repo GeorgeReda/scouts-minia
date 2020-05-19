@@ -12,7 +12,7 @@ class ArchiveImgTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        NetworkManager().launchURL(url, context);
+        NetworkManager().launchURL(url);
       },
       child: GridTile(child: Image.network(img)),
     );

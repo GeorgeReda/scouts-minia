@@ -16,13 +16,13 @@ class _ArchiveState extends State<Archive> {
       body: Padding(
         padding: EdgeInsets.all(8),
         child: FutureBuilder(
-          future: NetworkManager().getArchive(context),
+          future: NetworkManager().getArchive(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return RefreshIndicator(
                 color: Theme.of(context).primaryColor,
                 onRefresh: () {
-                  return NetworkManager().getArchive(context);
+                  return NetworkManager().getArchive();
                 },
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

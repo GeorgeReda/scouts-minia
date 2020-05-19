@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:scouts_minia/tools/network_manager.dart';
-import 'package:scouts_minia/tools/themeChanger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../components/reusable_list_tile.dart';
 import '../constants.dart';
 
 class Settings extends StatefulWidget {
@@ -17,7 +16,7 @@ class _SettingsState extends State<Settings> {
   String email;
   String image;
 
-  Future<Null> getSharedPrefs() async {
+  Future<void> getSharedPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       name = prefs.getString('name');
@@ -34,6 +33,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    print(Get.isDarkMode);
     return Scaffold(
       body: SafeArea(
           child: ListView(
@@ -61,28 +61,33 @@ class _SettingsState extends State<Settings> {
             title: 'Edit account',
             icon: FontAwesomeIcons.exchangeAlt,
             onTap: () {
-              Navigator.pushNamed(context, 'accountDetails');
+              Get.toNamed('accountDetails');
             },
           ),
-          Card(
-            color: Theme.of(context).backgroundColor,
-            clipBehavior: Clip.hardEdge,
-            margin: EdgeInsets.all(8),
-            child: SwitchListTile(
-                title: Text(
-                  'Dark Mode',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(fontSize: 18),
-                ),
-                activeColor: Constants.lightPrimary,
-                value: Provider.of<ThemeChanger>(context).isDarkMode,
-                onChanged: (val) {
-                  Provider.of<ThemeChanger>(context, listen: false)
-                      .updateTheme(val);
-                }),
-          ),
+          ReusableListTile(title: 'Change Theme', icon: FontAwesomeIcons.lightbulb, onTap: (){
+            Get.dialog(AlertDialog(
+              backgroundColor: Theme.of(context).backgroundColor,
+                    titleTextStyle: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(fontSize: 18),
+                    title: Text('Change Theme'),
+                    actions: <Widget>[
+                      RaisedButton(
+                          onPressed: () {
+                            Get.close(1);
+                            Get.changeThemeMode(ThemeMode.light);
+                          },
+                          child: Text('light')),
+                      RaisedButton(
+                          onPressed: () {
+                            Get.close(1);
+                           Get.changeThemeMode(ThemeMode.dark);
+                          },
+                          child: Text('dark')),
+                    ],
+            ));
+          }),
           ReusableListTile(
             title: 'Logout',
             icon: FontAwesomeIcons.signOutAlt,
@@ -101,12 +106,12 @@ class _SettingsState extends State<Settings> {
                       RaisedButton(
                           onPressed: () {
                             NetworkManager().logOut();
-                            Navigator.pushReplacementNamed(context, 'login');
+                            Get.offAndToNamed('login');
                           },
                           child: Text('yes')),
                       RaisedButton(
                           onPressed: () {
-                            Navigator.pop(dialogContext);
+                            Get.close(1);
                           },
                           child: Text('no')),
                     ],
@@ -117,39 +122,6 @@ class _SettingsState extends State<Settings> {
           ),
         ],
       )),
-    );
-  }
-}
-
-class ReusableListTile extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Function onTap;
-
-  const ReusableListTile({
-    Key key,
-    @required this.title,
-    @required this.icon,
-    @required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).backgroundColor,
-      clipBehavior: Clip.hardEdge,
-      margin: EdgeInsets.all(8),
-      child: ListTile(
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-        ),
-        trailing: FaIcon(
-          icon,
-          color: Constants.darkPrimary,
-        ),
-        onTap: onTap,
-      ),
     );
   }
 }
