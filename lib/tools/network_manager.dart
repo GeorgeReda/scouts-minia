@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:scouts_minia/components/archive_image_tile.dart';
+import 'package:scouts_minia/UI/components/archive_image_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,22 +19,19 @@ class NetworkManager {
       http.post(myUrl,
           headers: {'Accept': 'application/json'},
           body: {"email": "$email", "password": "$password"}).then((response) {
+        print(response.statusCode);
+        print(response.body.toUpperCase());
         var data = jsonDecode(response.body.trim());
-        if (response.body.contains('unauthenticated')) {
-          showModDialog(
-              'There is no user with this account . Please register !');
-        }
-        if (response.body.contains('error')) {
-        } else {
-          prefs
-            ..setBool('state', true)
-            ..setString('api_token', data["api_token"])
-            ..setString('name', data["name"])
-            ..setString('email', data["email"])
-            ..setInt('mobile', data["mobile"])
-            ..setString('image', data["image"]);
-          Get.offAllNamed('mainScreen');
-        }
+
+        prefs
+          ..setBool('state', true)
+          ..setString('api_token', data["api_token"])
+          ..setString('name', data["name"])
+          ..setString('email', data["email"])
+          ..setInt('mobile', data["mobile"]);
+        Get.offAllNamed('mainScreen');
+      }).catchError((e) {
+        showModDialog('There is no user with this account . Please register !');
       });
     } catch (e) {
       showModDialog('An error has occurred . Please try again !');
@@ -62,7 +59,7 @@ class NetworkManager {
         "mobile": "${int.parse(mobile)}",
         "image": "$image"
       }).then((response) {
-        status = response.body.contains('error');
+        status = response.body.contains('no');
         var data = jsonDecode(response.body.toString().trim());
         if (status) {
           showModDialog('An error has occurred . Please try again !');
@@ -72,8 +69,7 @@ class NetworkManager {
             ..setString('api_token', data["api_token"])
             ..setString('name', name)
             ..setString('email', email)
-            ..setInt('mobile', int.parse(mobile))
-            ..setString('image', image);
+            ..setInt('mobile', int.parse(mobile));
           Get.offAllNamed('mainScreen');
         }
       });
@@ -105,9 +101,8 @@ class NetworkManager {
         "image": image
       }).then((response) {
         status = response.body.contains('error');
-        var data = jsonDecode(response.body.trim());
         if (status) {
-          showModDialog(data);
+          showModDialog('An Error has occurred !');
         } else {
           prefs
             ..setString('name', name)
@@ -184,14 +179,12 @@ class NetworkManager {
   }
 
   // files means books for library and docs for competitions
-  getFiles(
-    url,
-  ) async {
+  getFiles() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var tokenVal = prefs.getString('api_token');
       http.Response response = await http.get(
-        '$url',
+        'http://www.json-generator.com/api/json/get/cfYmFEaPyq?indent=2',
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer Token $tokenVal'
@@ -216,6 +209,7 @@ class NetworkManager {
     }
   }
 
+// Todo add it ti BLOC
   launchURL(
     url,
   ) async {
@@ -280,10 +274,8 @@ class NetworkManager {
 }
 
 // ShowModified Dialog
-showModDialog(
-  String title,
-) {
-  return AlertDialog(
+showModDialog(String title) {
+  Get.dialog(AlertDialog(
     backgroundColor: Get.theme.backgroundColor,
     titleTextStyle: Get.theme.textTheme.bodyText1.copyWith(fontSize: 18),
     title: Text(title),
@@ -294,5 +286,5 @@ showModDialog(
           },
           child: Text('Ok')),
     ],
-  );
+  ));
 }

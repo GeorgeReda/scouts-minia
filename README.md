@@ -7,5 +7,9 @@
 4- **Image Picker** for uploading pictures
 5- **Url Launcher** for Web Links' navigation
 6- **Get** for improving performance , decreasing memory leaks , theme changing and others
+7-**Flutter Bloc** for implementing BLoC with ease
+8-**Equatable** for classes Comparability
+9-**Font Awesome Flutter** for icons
+10-**Cached Network Image** for cahcing images
 ## Font :
             ElMessiri

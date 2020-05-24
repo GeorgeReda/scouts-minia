@@ -15,31 +15,41 @@ class Constants {
   static const Color darkTextSelection = Color.fromRGBO(79, 23, 146, 0.4);
   static const Color darkText = Color.fromRGBO(198, 200, 204, 1);
   static const double DividerIndent = 10;
+  static Widget circularProgressIndicator = Container(
+    height: 100,
+    width: 100,
+    alignment: Alignment.center,
+    child: const CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
+      backgroundColor: Constants.lightPrimary,
+    ),
+  );
 
   static ThemeData lightTheme = ThemeData(
-      primaryColor: lightPrimary,
-      accentColor: lightBG,
-      primaryIconTheme: IconThemeData(color: lightBG, size: 10),
-      backgroundColor: lightBG,
-      buttonColor: lightPrimary,
-      cursorColor: lightCursor,
-      dividerTheme: DividerThemeData(
-        color: Colors.grey.shade300,
-        indent: DividerIndent,
-        endIndent: DividerIndent,
-        thickness: 1,
-      ),
-      splashColor: lightCursor,
-      textSelectionColor: lightTextSelection,
-      textSelectionHandleColor: lightPrimary,
-      fontFamily: 'El Messiri',
-      appBarTheme: AppBarTheme(
-        color: lightPrimary,
-      ),
-      scaffoldBackgroundColor: lightBG,
-      iconTheme: IconThemeData(color: lightPrimary),
-      floatingActionButtonTheme:
-          FloatingActionButtonThemeData(backgroundColor: lightBG));
+    primaryColor: lightPrimary,
+    accentColor: lightBG,
+    primaryIconTheme: IconThemeData(color: lightBG, size: 10),
+    backgroundColor: lightBG,
+    buttonColor: lightPrimary,
+    cursorColor: lightCursor,
+    dividerTheme: DividerThemeData(
+      color: Colors.grey.shade300,
+      indent: DividerIndent,
+      endIndent: DividerIndent,
+      thickness: 1,
+    ),
+    splashColor: lightCursor,
+    textSelectionColor: lightTextSelection,
+    textSelectionHandleColor: lightPrimary,
+    fontFamily: 'El Messiri',
+    appBarTheme: AppBarTheme(
+      color: lightPrimary,
+    ),
+    scaffoldBackgroundColor: lightBG,
+    iconTheme: IconThemeData(color: lightPrimary),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: lightBG),
+  );
 
   static ThemeData darkTheme = ThemeData(
       primaryColor: darkPrimary,
@@ -61,7 +71,8 @@ class Constants {
       appBarTheme: AppBarTheme(color: lighterBlack),
       scaffoldBackgroundColor: darkBG,
       textTheme: TextTheme(
-          bodyText1: TextStyle(color: darkText), button: TextStyle(color: lightBG)),
+          bodyText1: TextStyle(color: darkText),
+          button: TextStyle(color: lightBG)),
       iconTheme: IconThemeData(color: darkText),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: darkBG));

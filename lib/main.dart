@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:scouts_minia/routes/accountDetails.dart';
-import 'package:scouts_minia/routes/addPost.dart';
-import 'package:scouts_minia/routes/login.dart';
-import 'package:scouts_minia/routes/register.dart';
+import 'package:scouts_minia/UI/routes/addPost.dart';
+import 'package:scouts_minia/UI/routes/login.dart';
+import 'package:scouts_minia/UI/routes/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+import 'UI/routes/accountDetails.dart';
+import 'UI/routes/mainScreen.dart';
 import 'constants.dart';
-import 'routes/mainScreen.dart';
 
 //Todo: implement [Get]
 main() {
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       theme: Constants.lightTheme,
       darkTheme: Constants.darkTheme,
       themeMode: ThemeMode.light,
+      defaultTransition: Transition.fade,
       namedRoutes: {
         'mainScreen': GetRoute(page: MainScreen()),
         'login': GetRoute(page: Login()),
