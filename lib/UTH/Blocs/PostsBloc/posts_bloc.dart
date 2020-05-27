@@ -42,7 +42,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
           yield PostsDone(posts: posts);
         }
       } catch (e) {
-        print(e);
         yield PostsFailure(error: 'error');
       }
     }

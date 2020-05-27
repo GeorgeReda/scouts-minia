@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
+import 'package:scouts_minia/tools/url_launcher.dart';
 
 class ArchiveImgTile extends StatelessWidget {
   final url;
@@ -12,7 +12,7 @@ class ArchiveImgTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        NetworkManager().launchURL(url);
+        launchURL(url);
       },
       child: GridTile(child: Image.network(img)),
     );

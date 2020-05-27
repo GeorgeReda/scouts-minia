@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scouts_minia/UI/components/book.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
+import 'package:scouts_minia/UI/components/error_page.dart';
+import 'package:scouts_minia/UTH/Blocs/CompetitionsBloc/competitions_bloc.dart';
 
 import '../../constants.dart';
 
@@ -10,20 +12,32 @@ class Competitions extends StatefulWidget {
 }
 
 class _CompetitionsState extends State<Competitions> {
+  final CompetitionsBloc _bloc = CompetitionsBloc();
+  @override
+  void initState() {
+    _bloc.add(OnPageOpen());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Scaffold(
-          body: FutureBuilder(
-            future: NetworkManager().getFiles(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data != null) {
-                return Scaffold(
+    return BlocProvider.value(
+      value: _bloc,
+      child: BlocBuilder<CompetitionsBloc, CompetitionsState>(
+        builder: (context, state) {
+          if (state is CompetitionsInitial || state is CompetitionsLoading)
+            return Constants.circularProgressIndicator;
+          else if (state is CompetitionsFailure)
+            return ErrorPage(text: state.error);
+          else if (state is CompetitionsDone)
+            return Scaffold(
+              body: Center(
+                child: Scaffold(
                     body: RefreshIndicator(
                   color: Theme.of(context).primaryColor,
                   onRefresh: () {
-                    return NetworkManager().getFiles();
+                    _bloc.add(OnPageOpen());
+                    return;
                   },
                   child: ListView.separated(
                     separatorBuilder: (context, index) => Divider(
@@ -32,43 +46,23 @@ class _CompetitionsState extends State<Competitions> {
                       thickness: 2,
                     ),
                     physics: BouncingScrollPhysics(),
-                    itemCount: snapshot.data.length,
+                    itemCount: state.competitions.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Book(
-                        title: snapshot.data[index]['title'],
-                        pic: snapshot.data[index]['pic'],
-                        index: snapshot.data[index]['index'],
-                        about: snapshot.data[index]['about'],
-                        date: snapshot.data[index]['date'],
-                        url: snapshot.data[index]['url'],
+                        title: state.competitions[index]['title'],
+                        pic: state.competitions[index]['pic'],
+                        index: state.competitions[index]['index'],
+                        about: state.competitions[index]['about'],
+                        date: state.competitions[index]['date'],
+                        url: state.competitions[index]['url'],
                       );
                     },
                   ),
-                ));
-              } else {
-                return Container(
-                  color: Theme.of(context).backgroundColor,
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation(Constants.darkPrimary),
-                        backgroundColor: Constants.lightPrimary,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Loading',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
-        ),
+                )),
+              ),
+            );
+          return Container();
+        },
       ),
     );
   }

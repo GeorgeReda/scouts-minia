@@ -21,7 +21,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     if (event is RegisterButtonPressed) {
       yield RegisterLoading();
       try {
-        _repo.register(
+        await _repo.register(
             name: event.name,
             email: event.email,
             password: event.password,
@@ -31,10 +31,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         if (response == 'error') {
           yield RegisterFailure(error: 'error');
         } else if (response == 'alreadyUser') {
-          print(response);
           yield RegisterFailure(error: 'alreadyUser');
         } else {
-          print(response);
           final prefs = await SharedPreferences.getInstance();
           prefs
             ..setBool('state', true)

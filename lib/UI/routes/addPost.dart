@@ -11,7 +11,6 @@ import 'package:scouts_minia/UI/components/form.dart';
 import 'package:scouts_minia/UI/components/mod_dialog.dart';
 import 'package:scouts_minia/UTH/Blocs/AddPostbloc/add_post_bloc.dart';
 import 'package:scouts_minia/constants.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
 
 class AddPost extends StatefulWidget {
   @override

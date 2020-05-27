@@ -21,14 +21,14 @@ class LoginRepo {
         } else {
           message = jsonDecode(response.body.trim());
         }
-        return message;
+        return;
       }).catchError((e) {
         message = 'noUser';
-        return message;
+        return;
       });
     } catch (e) {
       message = 'noUser';
-      return message;
+      return;
     }
   }
 }

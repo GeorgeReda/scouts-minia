@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/reusable_list_tile.dart';
 import '../../constants.dart';
@@ -34,7 +33,6 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    print(Get.isDarkMode);
     return Scaffold(
       body: SafeArea(
           child: ListView(
@@ -44,11 +42,11 @@ class _SettingsState extends State<Settings> {
           UserAccountsDrawerHeader(
             accountName: Text(
               '$name',
-              style: TextStyle(color: Constants.darkText, fontSize: 22),
+              style: TextStyle(color: Constants.darkText, fontSize: 18),
             ),
             accountEmail: Text(
               '$email',
-              style: TextStyle(color: Constants.darkText, fontSize: 18),
+              style: TextStyle(color: Constants.darkText, fontSize: 16),
             ),
             currentAccountPicture: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -98,32 +96,28 @@ class _SettingsState extends State<Settings> {
             title: 'Logout',
             icon: FontAwesomeIcons.signOutAlt,
             onTap: () {
-              showDialog<void>(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  return AlertDialog(
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    titleTextStyle: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(fontSize: 18),
-                    title: Text('Are you sure you want to logout?'),
-                    actions: <Widget>[
-                      RaisedButton(
-                          onPressed: () {
-                            NetworkManager().logOut();
-                            Get.offAndToNamed('login');
-                          },
-                          child: Text('yes')),
-                      RaisedButton(
-                          onPressed: () {
-                            Get.close(1);
-                          },
-                          child: Text('no')),
-                    ],
-                  );
-                },
-              );
+              Get.dialog(AlertDialog(
+                backgroundColor: Theme.of(context).backgroundColor,
+                titleTextStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontSize: 18),
+                title: Text('Are you sure you want to logout?'),
+                actions: <Widget>[
+                  RaisedButton(
+                      onPressed: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.clear();
+                        Get.offAndToNamed('login');
+                      },
+                      child: Text('yes')),
+                  RaisedButton(
+                      onPressed: () {
+                        Get.close(1);
+                      },
+                      child: Text('no')),
+                ],
+              ));
             },
           ),
         ],

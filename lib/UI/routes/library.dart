@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scouts_minia/UI/components/book.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
+import 'package:scouts_minia/UI/components/error_page.dart';
+import 'package:scouts_minia/UTH/Blocs/LibraryBloc/library_bloc.dart';
 
 import '../../constants.dart';
 
@@ -10,17 +12,30 @@ class Library extends StatefulWidget {
 }
 
 class _LibraryState extends State<Library> {
+  final LibraryBloc _bloc = LibraryBloc();
+  @override
+  void initState() {
+    _bloc.add(OnPageOpen());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: NetworkManager().getFiles(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data != null) {
+        body: BlocProvider.value(
+      value: _bloc,
+      child: BlocBuilder<LibraryBloc, LibraryState>(
+        builder: (context, state) {
+          if (state is LibraryInitial || state is LibraryLoading)
+            return Constants.circularProgressIndicator;
+          else if (state is LibraryFailure)
+            return ErrorPage(text: state.error);
+          else if (state is LibraryDone)
             return RefreshIndicator(
               color: Theme.of(context).primaryColor,
               onRefresh: () {
-                return NetworkManager().getFiles();
+                _bloc.add(OnPageOpen());
+                return;
               },
               child: ListView.separated(
                 separatorBuilder: (context, index) => Divider(
@@ -29,41 +44,22 @@ class _LibraryState extends State<Library> {
                   thickness: 2,
                 ),
                 physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: state.library.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Book(
-                    title: snapshot.data[index]['title'],
-                    pic: snapshot.data[index]['pic'],
-                    index: snapshot.data[index]['index'],
-                    about: snapshot.data[index]['about'],
-                    date: snapshot.data[index]['date'],
-                    url: snapshot.data[index]['url'],
+                    title: state.library[index]['title'],
+                    pic: state.library[index]['pic'],
+                    index: state.library[index]['index'],
+                    about: state.library[index]['about'],
+                    date: state.library[index]['date'],
+                    url: state.library[index]['url'],
                   );
                 },
               ),
             );
-          } else {
-            return Container(
-              color: Theme.of(context).backgroundColor,
-              alignment: Alignment.topCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
-                    backgroundColor: Constants.lightPrimary,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Loading',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
-              ),
-            );
-          }
+          return Container();
         },
       ),
-    );
+    ));
   }
 }

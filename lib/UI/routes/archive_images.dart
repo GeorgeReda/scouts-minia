@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scouts_minia/UI/components/archive_image_tile.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
+import 'package:scouts_minia/UI/components/error_page.dart';
+import 'package:scouts_minia/UTH/Blocs/ArchiveImgsBloc/archive_imgs_bloc.dart';
 
 import '../../constants.dart';
 
@@ -14,55 +16,50 @@ class ArchiveImgs extends StatefulWidget {
 }
 
 class _ArchiveImgsState extends State<ArchiveImgs> {
+  final ArchiveImgsBloc _bloc = ArchiveImgsBloc();
+  @override
+  void initState() {
+    _bloc.add(OnPageOpen());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(8),
-        child: FutureBuilder(
-          future: NetworkManager().getArchiveImgs(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data != null) {
-              return RefreshIndicator(
-                color: Theme.of(context).primaryColor,
-                onRefresh: () {
-                  return NetworkManager().getArchiveImgs();
-                },
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  physics: BouncingScrollPhysics(),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ArchiveImgTile(
-                        url: snapshot.data[index].url,
-                        img: snapshot.data[index].img);
+      body: BlocProvider.value(
+        value: _bloc,
+        child: BlocBuilder<ArchiveImgsBloc, ArchiveImgsState>(
+          builder: (context, state) {
+            if (state is ArchiveImgsLoading || state is ArchiveImgsInitial)
+              return Constants.circularProgressIndicator;
+            else if (state is ArchiveImgsFailure)
+              return ErrorPage(text: state.error);
+            else if (state is ArchiveImgsDone)
+              return Padding(
+                padding: EdgeInsets.all(8),
+                child: RefreshIndicator(
+                  color: Theme.of(context).primaryColor,
+                  onRefresh: () {
+                    _bloc.add(OnPageOpen());
+                    return;
                   },
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    physics: BouncingScrollPhysics(),
+                    itemCount: state.archiveImgs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ArchiveImgTile(
+                          url: state.archiveImgs[index]["url"],
+                          img: state.archiveImgs[index]["img"]);
+                    },
+                  ),
                 ),
               );
-            } else {
-              return Container(
-                color: Theme.of(context).backgroundColor,
-                alignment: Alignment.topCenter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
-                      backgroundColor: Constants.lightPrimary,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Loading',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ],
-                ),
-              );
-            }
+            return Container();
           },
         ),
       ),

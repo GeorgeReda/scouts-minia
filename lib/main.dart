@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nor El Alam Scouts',
-      home: SplashScreen(),
+      home: MainScreen(),
       theme: Constants.lightTheme,
       darkTheme: Constants.darkTheme,
       themeMode: ThemeMode.light,

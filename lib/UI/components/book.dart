@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scouts_minia/tools/network_manager.dart';
+import 'package:scouts_minia/tools/url_launcher.dart';
 
 class Book extends StatelessWidget {
   final int index;
@@ -52,7 +52,7 @@ class Book extends StatelessWidget {
           ],
         ),
         onTap: () {
-          NetworkManager().launchURL(url);
+          launchURL(url);
         },
       ),
     );

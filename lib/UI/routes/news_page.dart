@@ -41,7 +41,7 @@ class _NewsPageState extends State<NewsPage> {
       body: BlocProvider.value(
         value: _bloc,
         child: BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
-          if (state is PostsLoading)
+          if (state is PostsLoading || state is PostsInitial)
             return Center(child: Constants.circularProgressIndicator);
           else if (state is PostsFailure)
             return ErrorPage(text: state.error);

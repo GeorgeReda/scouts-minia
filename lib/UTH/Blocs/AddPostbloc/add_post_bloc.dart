@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:scouts_minia/UI/routes/addPost.dart';
 import 'package:scouts_minia/UTH/Repos/add_post_repo.dart';
 
 part 'add_post_event.dart';

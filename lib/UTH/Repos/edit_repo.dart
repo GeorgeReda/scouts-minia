@@ -6,27 +6,32 @@ import 'package:http/http.dart' as http;
 
 class EditRepo {
   final String url = '${Repo.baseUrl}'; // Todo: modify the URL
-  final String name, email;
-  final image;
-
-  EditRepo({@required this.name, @required this.email, @required this.image});
-  edit() {
+  var message;
+  Future edit(
+      {@required String name,
+      @required String email,
+      @required String image}) async {
     try {
-      http.post(url, headers: {
+      await http.post(url, headers: {
         'Accept': 'application/json'
       }, body: {
         "name": "$name",
         "email": "$email",
-        "image": image
+        "image": "$image"
       }).then((response) {
         if (response.statusCode != 200 ||
             response.body.toLowerCase().contains('error'))
-          return 'error';
+          message = 'error';
         else
-          return json.decode(response.body.trim());
-      }).catchError((e) => 'error');
+          message = json.decode(response.body.trim());
+        return;
+      }).catchError((e) {
+        message = 'error';
+        return;
+      });
     } catch (e) {
-      return 'error';
+      message = 'error';
+      return;
     }
   }
 }

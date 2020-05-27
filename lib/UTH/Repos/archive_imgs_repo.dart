@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ArchiveImgsRepo {
   final String url =
-        'http://www.json-generator.com/api/json/get/ceapRxXwqG?indent=2';
-  final String token;
+      'http://www.json-generator.com/api/json/get/ceapRxXwqG?indent=2';
+  var message;
 
-  ArchiveImgsRepo({@required this.token});
-  getArchive() {
+  Future getArchive() async {
     try {
-      http.get(
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString('api_token');
+      await http.get(
         url,
         headers: {
           'Accept': 'application/json',
@@ -19,12 +20,17 @@ class ArchiveImgsRepo {
       ).then((response) {
         if (response.statusCode != 200 ||
             response.body.toLowerCase().contains('error'))
-          return 'error';
+          message = 'error';
         else
-          return json.decode(response.body.trim());
-      }).catchError((e) => 'error');
+          message = json.decode(response.body.trim());
+        return;
+      }).catchError((e) {
+        message = 'error';
+        return;
+      });
     } catch (e) {
-      return 'error';
+      message = 'error';
+      return;
     }
   }
 }

@@ -28,7 +28,6 @@ class _RegisterState extends State<Register> {
 
   File _image;
   String base64Image;
-  String errMessage = 'Error uploading image';
   bool secureText = true;
   IconData icon = FontAwesomeIcons.eyeSlash;
 
@@ -68,7 +67,11 @@ class _RegisterState extends State<Register> {
                   .showModDialog('An error has occurred . Please try again !');
             else if (state.error == 'alreadyUser')
               ModDialog().showModDialog('Already a user . Please Login !');
-          } else if (state is ReigisterDone) Get.offAllNamed('mainScreen');
+          } else if (state is ReigisterDone) {
+            Get.close(2);
+            ModDialog().showModDialog(
+                'Account registred successfully . Please login !');
+          }
         },
         child: Scaffold(
           backgroundColor: Constants.lightBG,

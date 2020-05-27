@@ -15,13 +15,14 @@ class Constants {
   static const Color darkTextSelection = Color.fromRGBO(79, 23, 146, 0.4);
   static const Color darkText = Color.fromRGBO(198, 200, 204, 1);
   static const double DividerIndent = 10;
-  static Widget circularProgressIndicator = Container(
-    height: 100,
-    width: 100,
-    alignment: Alignment.center,
-    child: const CircularProgressIndicator(
-      valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
-      backgroundColor: Constants.lightPrimary,
+  static Widget circularProgressIndicator = Center(
+    child: Container(
+      height: 50,
+      width: 50,
+      child: const CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Constants.darkPrimary),
+        backgroundColor: Constants.lightPrimary,
+      ),
     ),
   );
 
