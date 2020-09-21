@@ -33,12 +33,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         } else if (response == 'alreadyUser') {
           yield RegisterFailure(error: 'alreadyUser');
         } else {
-          final prefs = await SharedPreferences.getInstance();
-          prefs
-            ..setBool('state', true)
-            ..setString('name', event.name)
-            ..setString('email', event.email)
-            ..setString('phone', event.phone);
           yield ReigisterDone();
         }
       } catch (e) {

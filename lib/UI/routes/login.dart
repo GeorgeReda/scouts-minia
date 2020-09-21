@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,7 +42,7 @@ class _LoginState extends State<Login> {
           if (state is LoginLoading)
             Get.dialog(Constants.circularProgressIndicator);
           else if (state is LoginFailure) {
-              Get.close(1);
+            Get.close(1);
             if (state.error == 'noUser') {
               ModDialog().showModDialog(
                   'There is no user with this account . Please register !');

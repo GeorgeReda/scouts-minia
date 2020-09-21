@@ -10,7 +10,6 @@ import 'UI/routes/accountDetails.dart';
 import 'UI/routes/mainScreen.dart';
 import 'constants.dart';
 
-//Todo: implement [Get]
 main() {
   runApp(MyApp());
 }
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nor El Alam Scouts',
-      home: MainScreen(),
+      home: SplashScreen(),
       theme: Constants.lightTheme,
       darkTheme: Constants.darkTheme,
       themeMode: ThemeMode.light,

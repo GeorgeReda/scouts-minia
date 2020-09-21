@@ -32,14 +32,14 @@ class RegisterRepo {
         } else {
           message = jsonDecode(response.body.trim());
         }
-        return message;
+        return;
       }).catchError((e) {
         message = 'alreadyUser';
-        return message;
+        return;
       });
     } catch (e) {
       message = 'error';
-      return message;
+      return;
     }
   }
 }
